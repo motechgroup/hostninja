@@ -326,6 +326,14 @@ class AdminController extends Controller
         return back()->with('success', "Payment method '{$method->name}' updated!");
     }
 
+    public function updatePaymentMethodCredentials(Request $request, \App\Models\PaymentMethod $method)
+    {
+        $this->ensureAdminAuth();
+        $credentials = $request->except(['_token', '_method']);
+        $method->update(['credentials' => $credentials]);
+        return back()->with('success', "Credentials for {$method->name} updated successfully!");
+    }
+
     public function deletePaymentMethod(\App\Models\PaymentMethod $method)
     {
         $this->ensureAdminAuth();

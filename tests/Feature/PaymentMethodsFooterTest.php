@@ -183,6 +183,75 @@ class PaymentMethodsFooterTest extends TestCase
         $this->assertStringContainsString('images/payment_logos/test_logo.png', $imgMethod->logo_html);
     }
 
+    public function test_active_payment_methods_appear_on_checkout_page()
+    {
+        $user = User::create([
+            'name' => 'Test Customer',
+            'email' => 'customer@test.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        \App\Models\HostingPlan::create([
+            'name' => 'Starter Cloud',
+            'slug' => 'starter',
+            'price_monthly' => 490.00,
+            'price_yearly' => 4900.00,
+            'storage_gb' => 10,
+            'bandwidth_gb' => 100,
+            'email_accounts' => 10,
+            'databases' => 5,
+            'is_active' => true,
+        ]);
+
+        PaymentMethod::create([
+            'name' => 'Binance Pay Crypto',
+            'code' => 'binance',
+            'category' => 'crypto',
+            'icon_svg' => '<svg viewBox="0 0 36 24"><text>BINANCE</text></svg>',
+            'is_enabled' => true,
+        ]);
+
+        PaymentMethod::create([
+            'name' => 'Disabled Payment Method',
+            'code' => 'disabled_method',
+            'category' => 'cards',
+            'icon_svg' => '<svg viewBox="0 0 36 24"><text>DISABLED</text></svg>',
+            'is_enabled' => false,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('checkout.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Binance Pay Crypto');
+        $response->assertDontSee('Disabled Payment Method');
+    }
+
+    public function test_admin_can_update_gateway_credentials()
+    {
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'role' => 'admin',
+            'password' => bcrypt('password'),
+        ]);
+
+        $pm = PaymentMethod::create([
+            'name' => 'M-Pesa Express',
+            'code' => 'mpesa',
+            'category' => 'mobile',
+            'icon_svg' => '<svg viewBox="0 0 36 24"></svg>',
+            'is_enabled' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('admin.payment-methods.credentials', $pm->id), [
+            'shortcode' => '247247',
+            'passkey' => 'test_passkey_12345',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertEquals('247247', $pm->fresh()->getCredential('shortcode'));
+        $this->assertEquals('test_passkey_12345', $pm->fresh()->getCredential('passkey'));
+    }
+
     public function test_footer_displays_enabled_payment_methods()
     {
         Setting::setKey('show_footer_payment_methods', '1', 'payment');

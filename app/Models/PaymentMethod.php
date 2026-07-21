@@ -13,12 +13,14 @@ class PaymentMethod extends Model
         'icon_svg',
         'is_enabled',
         'show_in_footer',
+        'credentials',
         'sort_order',
     ];
 
     protected $casts = [
         'is_enabled' => 'boolean',
         'show_in_footer' => 'boolean',
+        'credentials' => 'array',
         'sort_order' => 'integer',
     ];
 
@@ -37,6 +39,12 @@ class PaymentMethod extends Model
             ->orderBy('sort_order', 'asc')
             ->orderBy('name', 'asc')
             ->get();
+    }
+
+    public function getCredential(string $key, $default = null)
+    {
+        $creds = $this->credentials ?? [];
+        return $creds[$key] ?? $default;
     }
 
     public function getLogoHtmlAttribute()

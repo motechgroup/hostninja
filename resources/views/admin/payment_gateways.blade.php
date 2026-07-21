@@ -13,7 +13,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h1 class="font-['Hanken_Grotesk'] text-2xl font-extrabold text-slate-900">Payment Gateways & Logo Manager</h1>
-                <p class="text-xs text-slate-500 mt-1">Manage global payment providers, upload custom logos/SVGs, and configure footer payment badges.</p>
+                <p class="text-xs text-slate-500 mt-1">Manage global payment providers, configure API credentials, and control checkout availability.</p>
             </div>
             <div class="flex gap-3">
                 <button type="button" @click="showAddModal = true" class="px-4 py-2.5 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-2">
@@ -38,13 +38,13 @@
 
             <div class="glass-card p-6 rounded-2xl border border-slate-200">
                 <div class="flex items-center justify-between">
-                    <span class="text-slate-500 text-xs font-semibold">Active Gateways</span>
+                    <span class="text-slate-500 text-xs font-semibold">Checkout Active</span>
                     <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
+                        <span class="material-symbols-outlined text-lg">shopping_cart_checkout</span>
                     </div>
                 </div>
                 <div class="font-['Hanken_Grotesk'] text-2xl font-extrabold text-emerald-600 mt-2">{{ $paymentMethods->where('is_enabled', true)->count() }}</div>
-                <p class="text-[10px] text-slate-400 mt-1">Enabled for customer checkout</p>
+                <p class="text-[10px] text-slate-400 mt-1">Visible on checkout page</p>
             </div>
 
             <div class="glass-card p-6 rounded-2xl border border-slate-200">
@@ -78,8 +78,8 @@
             
             <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 gap-4">
                 <div>
-                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">API Credentials & Footer Visibility</h3>
-                    <p class="text-xs text-slate-500">Configure core M-Pesa STK Push parameters and Stripe publishable keys.</p>
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Core API Credentials & Global Settings</h3>
+                    <p class="text-xs text-slate-500">Configure global M-Pesa STK Push and Stripe publishable keys.</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-xs font-bold text-slate-700">Footer Logos Section:</span>
@@ -89,7 +89,7 @@
                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                     </label>
                     <button type="submit" class="px-5 py-2 bg-slate-900 hover:bg-[#0059bb] text-white font-bold text-xs rounded-xl shadow transition-all">
-                        Save Credentials
+                        Save Global Settings
                     </button>
                 </div>
             </div>
@@ -145,8 +145,8 @@
         <div class="glass-card p-6 rounded-3xl border border-slate-200 space-y-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                 <div>
-                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Configured Payment Logos & Methods ({{ count($paymentMethods) }})</h3>
-                    <p class="text-xs text-slate-500">Upload custom logo files, select preset icons, toggle footer visibility, or adjust ordering.</p>
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Configured Payment Gateways ({{ count($paymentMethods) }})</h3>
+                    <p class="text-xs text-slate-500">Active payment gateways below will automatically show up as payment options on the checkout page.</p>
                 </div>
 
                 <!-- Category Filters -->
@@ -172,7 +172,12 @@
                         </div>
 
                         <div>
-                            <div class="font-bold text-xs text-slate-900">{{ $pm->name }}</div>
+                            <div class="font-bold text-xs text-slate-900 flex items-center justify-between">
+                                <span>{{ $pm->name }}</span>
+                                @if($pm->is_enabled)
+                                    <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">ON CHECKOUT</span>
+                                @endif
+                            </div>
                             <div class="text-[10px] text-slate-400 capitalize font-mono">{{ $pm->code }} &bull; {{ $pm->category }}</div>
                         </div>
 
@@ -187,33 +192,35 @@
                                     </button>
                                 </form>
 
-                                <!-- Active Status Toggle -->
+                                <!-- Active Status Toggle (Checkout) -->
                                 <form method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}">
                                     @csrf
-                                    <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}" title="Toggle System Active Status">
-                                        {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
+                                    <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}" title="Toggle Checkout Active Status">
+                                        {{ $pm->is_enabled ? 'Checkout: Active' : 'Disabled' }}
                                     </button>
                                 </form>
                             </div>
 
-                            <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-50">
-                                <!-- Edit Button -->
-                                <button type="button" @click="editMethod = { id: '{{ $pm->id }}', name: '{{ addslashes($pm->name) }}', category: '{{ $pm->category }}', sort_order: {{ $pm->sort_order }}, show_in_footer: {{ $pm->show_in_footer ? 'true' : 'false' }}, icon_svg: '{{ addslashes($pm->icon_svg) }}' }; showEditModal = true" class="text-[11px] text-slate-500 hover:text-[#0059bb] font-semibold flex items-center gap-0.5">
-                                    <span class="material-symbols-outlined text-xs">edit</span>
-                                    <span>Edit / Change Logo</span>
+                            <!-- Configure Credentials & Edit Buttons -->
+                            <div class="flex items-center justify-between pt-1 border-t border-slate-50">
+                                <button type="button" @click="openCredsModal({{ json_encode($pm) }})" class="text-[11px] text-[#0059bb] hover:underline font-bold flex items-center gap-0.5">
+                                    <span class="material-symbols-outlined text-xs">key</span>
+                                    <span>API Keys & Creds</span>
                                 </button>
 
-                                <span class="text-slate-300">&bull;</span>
-
-                                <!-- Delete Button -->
-                                <form method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-[11px] text-slate-400 hover:text-rose-600 font-semibold flex items-center gap-0.5" title="Delete Gateway">
-                                        <span class="material-symbols-outlined text-xs">delete</span>
-                                        <span>Delete</span>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" @click="editMethod = { id: '{{ $pm->id }}', name: '{{ addslashes($pm->name) }}', category: '{{ $pm->category }}', sort_order: {{ $pm->sort_order }}, show_in_footer: {{ $pm->show_in_footer ? 'true' : 'false' }}, icon_svg: '{{ addslashes($pm->icon_svg) }}' }; showEditModal = true" class="text-[11px] text-slate-500 hover:text-[#0059bb] font-semibold">
+                                        Edit
                                     </button>
-                                </form>
+                                    <span class="text-slate-300">&bull;</span>
+                                    <form method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-[11px] text-slate-400 hover:text-rose-600 font-semibold">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -221,7 +228,109 @@
             </div>
         </div>
 
-        <!-- MODAL 1: ADD NEW PAYMENT METHOD -->
+        <!-- MODAL 1: CONFIGURE GATEWAY CREDENTIALS -->
+        <div x-show="showCredsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak>
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-lg w-full shadow-2xl space-y-6" @click.away="showCredsModal = false">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Configure Gateway Credentials</h3>
+                        <p class="text-xs text-slate-500" x-text="'API keys and parameters for ' + credsMethod.name"></p>
+                    </div>
+                    <button type="button" @click="showCredsModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
+                </div>
+
+                <form method="POST" :action="'/admin/payment-methods/' + credsMethod.id + '/credentials'" class="space-y-4">
+                    @csrf
+                    
+                    <!-- MPESA CREDENTIALS -->
+                    <template x-if="credsMethod.code === 'mpesa'">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Paybill / Till Shortcode</label>
+                                <input type="text" name="shortcode" :value="credsMethod.credentials ? credsMethod.credentials.shortcode : '174379'" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">STK Push Passkey</label>
+                                <input type="password" name="passkey" :value="credsMethod.credentials ? credsMethod.credentials.passkey : ''" placeholder="••••••••••••" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Consumer Key</label>
+                                <input type="text" name="consumer_key" :value="credsMethod.credentials ? credsMethod.credentials.consumer_key : ''" placeholder="M-Pesa Consumer Key" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Consumer Secret</label>
+                                <input type="password" name="consumer_secret" :value="credsMethod.credentials ? credsMethod.credentials.consumer_secret : ''" placeholder="••••••••••••" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- STRIPE CREDENTIALS -->
+                    <template x-if="credsMethod.code === 'stripe'">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Stripe Publishable Key</label>
+                                <input type="text" name="publishable_key" :value="credsMethod.credentials ? credsMethod.credentials.publishable_key : ''" placeholder="pk_live_..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Stripe Secret Key</label>
+                                <input type="password" name="secret_key" :value="credsMethod.credentials ? credsMethod.credentials.secret_key : ''" placeholder="sk_live_..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Webhook Signing Secret</label>
+                                <input type="password" name="webhook_secret" :value="credsMethod.credentials ? credsMethod.credentials.webhook_secret : ''" placeholder="whsec_..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- BANK / PAYONEER / WISE CREDENTIALS -->
+                    <template x-if="credsMethod.code === 'banktransfer' || credsMethod.code === 'wise' || credsMethod.code === 'payoneer'">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Bank / Institution Name</label>
+                                <input type="text" name="bank_name" :value="credsMethod.credentials ? credsMethod.credentials.bank_name : ''" placeholder="e.g. KCB Bank Kenya / Wise Europe" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Account Number / IBAN</label>
+                                <input type="text" name="account_number" :value="credsMethod.credentials ? credsMethod.credentials.account_number : ''" placeholder="e.g. 1234567890 / IBAN" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Account Name / Beneficiary</label>
+                                <input type="text" name="account_name" :value="credsMethod.credentials ? credsMethod.credentials.account_name : ''" placeholder="e.g. HostNinja Ltd" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">SWIFT / BIC Code</label>
+                                <input type="text" name="swift_code" :value="credsMethod.credentials ? credsMethod.credentials.swift_code : ''" placeholder="KCBLKENX" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- FALLBACK GENERIC CREDENTIALS -->
+                    <template x-if="['mpesa', 'stripe', 'banktransfer', 'wise', 'payoneer'].indexOf(credsMethod.code) === -1">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">API Key / Merchant ID</label>
+                                <input type="text" name="api_key" :value="credsMethod.credentials ? credsMethod.credentials.api_key : ''" placeholder="Merchant Key / ID" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Secret Key / Token</label>
+                                <input type="password" name="secret_key" :value="credsMethod.credentials ? credsMethod.credentials.secret_key : ''" placeholder="••••••••••••" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700 block mb-1">Additional Instructions / Account Email</label>
+                                <input type="text" name="instructions" :value="credsMethod.credentials ? credsMethod.credentials.instructions : ''" placeholder="e.g. Deposit address or email" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900">
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="flex justify-end gap-2 pt-4 border-t border-slate-100">
+                        <button type="button" @click="showCredsModal = false" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">Cancel</button>
+                        <button type="submit" class="px-5 py-2 bg-[#0059bb] text-white font-bold text-xs rounded-xl shadow">Save Gateway Credentials</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL 2: ADD NEW PAYMENT METHOD -->
         <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak>
             <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-xl w-full shadow-2xl space-y-6" @click.away="showAddModal = false">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -307,7 +416,7 @@
             </div>
         </div>
 
-        <!-- MODAL 2: EDIT PAYMENT METHOD -->
+        <!-- MODAL 3: EDIT PAYMENT METHOD -->
         <div x-show="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak>
             <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-xl w-full shadow-2xl space-y-6" @click.away="showEditModal = false">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -404,8 +513,10 @@
                 categoryFilter: 'all',
                 showAddModal: false,
                 showEditModal: false,
+                showCredsModal: false,
                 addLogoMode: 'upload',
                 editLogoMode: 'upload',
+                credsMethod: { id: '', name: '', code: '', credentials: {} },
                 editMethod: { id: '', name: '', category: 'cards', sort_order: 1, show_in_footer: true, icon_svg: '' },
                 presets: {
                     card: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#1E293B"/><rect y="6" width="36" height="4" fill="#475569"/><rect x="4" y="14" width="8" height="4" rx="1" fill="#38BDF8"/></svg>',
@@ -413,6 +524,13 @@
                     crypto: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#F59E0B"/><path d="M18 6l6 6-6 6-6-6 6-6z" fill="#ffffff"/></svg>',
                     bank: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#1E293B"/><path d="M18 6L8 11v2h20v-2L18 6zm-8 8v5h2v-5h-2zm5 0v5h2v-5h-2zm5 0v5h2v-5h-2zm-12 6v2h20v-2H8z" fill="#94A3B8"/></svg>',
                     wallet: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#2563EB"/><rect x="6" y="8" width="24" height="12" rx="2" fill="#ffffff"/><circle cx="24" cy="14" r="2" fill="#2563EB"/></svg>'
+                },
+                openCredsModal(method) {
+                    this.credsMethod = method;
+                    if (!this.credsMethod.credentials) {
+                        this.credsMethod.credentials = {};
+                    }
+                    this.showCredsModal = true;
                 }
             };
         }

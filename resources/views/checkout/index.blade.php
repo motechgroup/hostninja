@@ -187,29 +187,52 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <label class="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 cursor-pointer flex flex-col justify-between space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-bold text-xs text-slate-900">M-Pesa Express</span>
-                                    <input type="radio" name="payment_method" value="mpesa" checked class="w-4 h-4 text-emerald-600 focus:ring-0">
-                                </div>
-                                <span class="text-[10px] text-slate-500">STK Push to Safaricom Phone</span>
-                            </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" x-data="{ selectedMethod: '{{ $paymentMethods->first()?->code ?? 'mpesa' }}' }">
+                            @if(isset($paymentMethods) && $paymentMethods->count() > 0)
+                                @foreach($paymentMethods as $index => $method)
+                                    <label :class="selectedMethod === '{{ $method->code }}' ? 'border-[#0059bb] bg-blue-50/40 ring-1 ring-[#0059bb]' : 'border-slate-200 bg-white hover:border-slate-300'" class="p-4 rounded-2xl border-2 cursor-pointer flex flex-col justify-between space-y-3 transition-all">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2 overflow-hidden">
+                                                <div class="shrink-0 p-1 bg-slate-900 rounded-lg flex items-center justify-center">
+                                                    {!! $method->logo_html !!}
+                                                </div>
+                                                <span class="font-bold text-xs text-slate-900 truncate">{{ $method->name }}</span>
+                                            </div>
+                                            <input type="radio" name="payment_method" value="{{ $method->code }}" x-model="selectedMethod" {{ $index === 0 ? 'checked' : '' }} class="w-4 h-4 text-[#0059bb] focus:ring-0">
+                                        </div>
+                                        <span class="text-[10px] text-slate-500 capitalize font-mono">{{ $method->category }} gateway</span>
+                                    </label>
+                                @endforeach
+                            @else
+                                <label class="p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/40 cursor-pointer flex flex-col justify-between space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-xs text-slate-900">M-Pesa Express</span>
+                                        <input type="radio" name="payment_method" value="mpesa" checked class="w-4 h-4 text-emerald-600 focus:ring-0">
+                                    </div>
+                                    <span class="text-[10px] text-slate-500">STK Push to Safaricom Phone</span>
+                                </label>
 
-                            <label class="p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer flex flex-col justify-between space-y-2 hover:border-slate-300">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-bold text-xs text-slate-900">Credit / Debit Card</span>
-                                    <input type="radio" name="payment_method" value="stripe" class="w-4 h-4 text-[#0059bb] focus:ring-0">
-                                </div>
-                                <span class="text-[10px] text-slate-500">Visa, Mastercard, Amex</span>
-                            </label>
+                                <label class="p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer flex flex-col justify-between space-y-2 hover:border-slate-300">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-xs text-slate-900">Credit / Debit Card</span>
+                                        <input type="radio" name="payment_method" value="stripe" class="w-4 h-4 text-[#0059bb] focus:ring-0">
+                                    </div>
+                                    <span class="text-[10px] text-slate-500">Visa, Mastercard, Amex</span>
+                                </label>
+                            @endif
 
-                            <label class="p-4 rounded-2xl border-2 border-slate-200 bg-white cursor-pointer flex flex-col justify-between space-y-2 hover:border-slate-300">
+                            <!-- Account Wallet Option -->
+                            <label :class="selectedMethod === 'wallet' ? 'border-[#0059bb] bg-blue-50/40 ring-1 ring-[#0059bb]' : 'border-slate-200 bg-white hover:border-slate-300'" class="p-4 rounded-2xl border-2 cursor-pointer flex flex-col justify-between space-y-3 transition-all">
                                 <div class="flex items-center justify-between">
-                                    <span class="font-bold text-xs text-slate-900">Account Wallet</span>
-                                    <input type="radio" name="payment_method" value="wallet" class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div class="flex items-center gap-2">
+                                        <div class="p-1.5 bg-indigo-600 text-white rounded-lg flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+                                        </div>
+                                        <span class="font-bold text-xs text-slate-900">Account Wallet</span>
+                                    </div>
+                                    <input type="radio" name="payment_method" value="wallet" x-model="selectedMethod" class="w-4 h-4 text-indigo-600 focus:ring-0">
                                 </div>
-                                <span class="text-[10px] text-slate-500">KES {{ number_format(auth()->user()->balance ?? 0, 2) }}</span>
+                                <span class="text-[10px] text-slate-500">Available: KES {{ number_format(auth()->user()->balance ?? 0, 2) }}</span>
                             </label>
                         </div>
                     </div>

@@ -59,6 +59,15 @@ class CheckoutController extends Controller
         $tax = $taxableAmount * 0.16; // 16% VAT
         $total = $taxableAmount + $tax;
 
+        $paymentMethods = collect();
+        if (\Illuminate\Support\Facades\Schema::hasTable('payment_methods')) {
+            try {
+                $paymentMethods = \App\Models\PaymentMethod::getEnabled();
+            } catch (\Throwable $e) {
+                $paymentMethods = collect();
+            }
+        }
+
         return view('checkout.index', compact(
             'hostingPlans',
             'selectedPlan',
@@ -68,7 +77,8 @@ class CheckoutController extends Controller
             'subtotal',
             'discountAmount',
             'tax',
-            'total'
+            'total',
+            'paymentMethods'
         ));
     }
 
