@@ -189,7 +189,7 @@
                         </ul>
                     </div>
 
-                    <a href="{{ route('dashboard') }}" class="w-full py-3 rounded-xl font-bold text-xs text-center transition-all block {{ $plan->is_featured ? 'bg-[#0059bb] text-white shadow-lg shadow-blue-500/20' : 'border border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white' }}">
+                    <a href="{{ route('checkout.index', ['plan' => $plan->slug]) }}" class="w-full py-3 rounded-xl font-bold text-xs text-center transition-all block {{ $plan->is_featured ? 'bg-[#0059bb] text-white shadow-lg shadow-blue-500/20' : 'border border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white' }}">
                         Get Started
                     </a>
                 </div>

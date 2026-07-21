@@ -76,7 +76,7 @@
                             <td class="py-4 px-6"></td>
                             @foreach($hostingPlans as $plan)
                                 <td class="py-6 px-6 text-center {{ $plan->is_featured ? 'bg-[#0059bb]/5 border-x border-[#0059bb]/20' : '' }}">
-                                    <a href="{{ route('dashboard') }}" class="py-3 px-5 rounded-xl text-xs font-bold block transition-all {{ $plan->is_featured ? 'bg-[#0059bb] hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' : 'bg-slate-900 hover:bg-[#0059bb] text-white' }}">
+                                    <a href="{{ route('checkout.index', ['plan' => $plan->slug]) }}" class="py-3 px-5 rounded-xl text-xs font-bold block transition-all {{ $plan->is_featured ? 'bg-[#0059bb] hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25' : 'bg-slate-900 hover:bg-[#0059bb] text-white' }}">
                                         Choose {{ $plan->name }}
                                     </a>
                                 </td>

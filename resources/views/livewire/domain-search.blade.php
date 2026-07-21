@@ -109,7 +109,7 @@
                 <span class="material-symbols-outlined text-emerald-600">check_circle</span>
                 <span>{{ $cartMessage }}</span>
             </div>
-            <a href="{{ route('dashboard') }}" class="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-500 transition-colors shadow">Go to Checkout &rarr;</a>
+            <a href="{{ route('checkout.index') }}" class="px-4 py-1.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-500 transition-colors shadow">Go to Checkout &rarr;</a>
         </div>
     @endif
 

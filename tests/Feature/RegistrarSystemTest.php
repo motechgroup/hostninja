@@ -18,7 +18,11 @@ class RegistrarSystemTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected bool $seed = true;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\HostNinjaSeeder::class);
+    }
 
     public function test_registrar_manager_resolves_strategy_pattern_driver(): void
     {

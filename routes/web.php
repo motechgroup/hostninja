@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResellerController;
@@ -11,6 +12,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/hosting', [HomeController::class, 'hosting'])->name('hosting.index');
 Route::get('/domains/search', [HomeController::class, 'domainSearch'])->name('domains.search');
+
+// Checkout & Cart System Routes
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/plan', [CheckoutController::class, 'selectPlan'])->name('checkout.plan');
+Route::post('/checkout/domain/remove', [CheckoutController::class, 'removeDomain'])->name('checkout.domain.remove');
+Route::post('/checkout/coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.coupon');
+Route::post('/checkout/coupon/remove', [CheckoutController::class, 'removeCoupon'])->name('checkout.coupon.remove');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/checkout/success/{invoice}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

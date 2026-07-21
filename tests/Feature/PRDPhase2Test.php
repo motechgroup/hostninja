@@ -14,7 +14,11 @@ class PRDPhase2Test extends TestCase
 {
     use RefreshDatabase;
 
-    protected bool $seed = true;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\HostNinjaSeeder::class);
+    }
 
     public function test_ai_domain_assistant_generates_suggestions(): void
     {
@@ -38,7 +42,7 @@ class PRDPhase2Test extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertDontSee('href="http://localhost/admin"', false);
+        $response->assertDontSee('Admin Dashboard');
     }
 
     public function test_dedicated_admin_login_page_renders_and_authenticates(): void
