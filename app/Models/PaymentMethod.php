@@ -38,4 +38,19 @@ class PaymentMethod extends Model
             ->orderBy('name', 'asc')
             ->get();
     }
+
+    public function getLogoHtmlAttribute()
+    {
+        $content = trim($this->icon_svg ?? '');
+        if (empty($content)) {
+            return '<span class="material-symbols-outlined text-slate-400 text-xl">payments</span>';
+        }
+
+        if (str_starts_with($content, '<svg') || str_starts_with($content, '<')) {
+            return $content;
+        }
+
+        $url = (str_starts_with($content, 'http://') || str_starts_with($content, 'https://')) ? $content : asset($content);
+        return '<img src="' . e($url) . '" alt="' . e($this->name) . '" class="w-auto h-7 max-h-7 object-contain inline-block" />';
+    }
 }

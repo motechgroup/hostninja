@@ -26,9 +26,9 @@
 
             <div class="flex flex-wrap items-center justify-center md:justify-end gap-3" role="region" aria-label="Supported Payment Methods">
                 @foreach($paymentMethods as $method)
-                    <div title="{{ $method->name }}" aria-label="{{ $method->name }} payment method" class="group relative flex items-center justify-center p-1 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-500 shadow-sm transition-all duration-300 hover:scale-105 cursor-pointer">
-                        <div class="opacity-90 group-hover:opacity-100 transition-opacity">
-                            {!! $method->icon_svg !!}
+                    <div title="{{ $method->name }}" aria-label="{{ $method->name }} payment method" class="group relative flex items-center justify-center p-1.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-500 shadow-sm transition-all duration-300 hover:scale-105 cursor-pointer">
+                        <div class="opacity-90 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            {!! $method->logo_html !!}
                         </div>
 
                         <!-- Tooltip Popup -->

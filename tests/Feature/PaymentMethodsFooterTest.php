@@ -160,6 +160,29 @@ class PaymentMethodsFooterTest extends TestCase
         $this->assertCount(0, $enabledForFooter);
     }
 
+    public function test_payment_method_logo_html_accessor_supports_images_and_svgs()
+    {
+        $svgMethod = PaymentMethod::create([
+            'name' => 'SVG Method',
+            'code' => 'svg_method',
+            'category' => 'cards',
+            'icon_svg' => '<svg viewBox="0 0 36 24"><text>TEST_SVG</text></svg>',
+            'is_enabled' => true,
+        ]);
+
+        $imgMethod = PaymentMethod::create([
+            'name' => 'Uploaded Image Method',
+            'code' => 'img_method',
+            'category' => 'cards',
+            'icon_svg' => 'images/payment_logos/test_logo.png',
+            'is_enabled' => true,
+        ]);
+
+        $this->assertStringContainsString('<svg', $svgMethod->logo_html);
+        $this->assertStringContainsString('<img src=', $imgMethod->logo_html);
+        $this->assertStringContainsString('images/payment_logos/test_logo.png', $imgMethod->logo_html);
+    }
+
     public function test_footer_displays_enabled_payment_methods()
     {
         Setting::setKey('show_footer_payment_methods', '1', 'payment');

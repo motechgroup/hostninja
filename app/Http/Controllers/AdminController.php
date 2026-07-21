@@ -260,15 +260,29 @@ class AdminController extends Controller
             'name' => 'required|string',
             'code' => 'required|string|unique:payment_methods,code',
             'category' => 'required|string',
-            'icon_svg' => 'required|string',
+            'icon_svg' => 'nullable|string',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'sort_order' => 'nullable|integer',
         ]);
+
+        $iconContent = $request->icon_svg ?? '<svg class="w-auto h-7" viewBox="0 0 36 24"><rect width="36" height="24" rx="4" fill="#0059BB"/></svg>';
+
+        if ($request->hasFile('logo_file')) {
+            $file = $request->file('logo_file');
+            $filename = time() . '_' . \Illuminate\Support\Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('images/payment_logos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $iconContent = 'images/payment_logos/' . $filename;
+        }
 
         \App\Models\PaymentMethod::create([
             'name' => $request->name,
             'code' => \Illuminate\Support\Str::slug($request->code),
             'category' => $request->category,
-            'icon_svg' => $request->icon_svg,
+            'icon_svg' => $iconContent,
             'sort_order' => $request->sort_order ?? 99,
             'is_enabled' => true,
             'show_in_footer' => true,
@@ -284,14 +298,28 @@ class AdminController extends Controller
             'name' => 'required|string',
             'category' => 'required|string',
             'sort_order' => 'required|integer',
-            'icon_svg' => 'required|string',
+            'icon_svg' => 'nullable|string',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+        $iconContent = $request->filled('icon_svg') ? $request->icon_svg : $method->icon_svg;
+
+        if ($request->hasFile('logo_file')) {
+            $file = $request->file('logo_file');
+            $filename = time() . '_' . \Illuminate\Support\Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('images/payment_logos');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $iconContent = 'images/payment_logos/' . $filename;
+        }
 
         $method->update([
             'name' => $request->name,
             'category' => $request->category,
             'sort_order' => $request->sort_order,
-            'icon_svg' => $request->icon_svg,
+            'icon_svg' => $iconContent,
             'show_in_footer' => $request->has('show_in_footer') ? (bool) $request->show_in_footer : $method->show_in_footer,
         ]);
 
