@@ -70,11 +70,14 @@ Route::get('/admin/plans', [AdminController::class, 'plans'])->name('admin.plans
 Route::get('/admin/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
 Route::get('/admin/invoices', [AdminController::class, 'invoices'])->name('admin.invoices');
 Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+Route::post('/admin/smtp/test', [AdminController::class, 'testSmtp'])->name('admin.smtp.test');
+Route::post('/admin/invoices/{invoice}/resend-email', [AdminController::class, 'resendInvoiceEmail'])->name('admin.invoices.resend');
+Route::post('/admin/services/{service}/send-cpanel-credentials', [AdminController::class, 'sendCpanelCredentialsEmail'])->name('admin.services.cpanel-credentials');
 Route::get('/admin/integrations/registrars', [AdminController::class, 'registrars'])->name('admin.registrars');
 Route::get('/admin/integrations/registrar-logs', [AdminController::class, 'registrarLogs'])->name('admin.registrar-logs');
 
 // Admin Actions
-Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
 Route::post('/admin/hosting-plans', [AdminController::class, 'createPlan'])->name('admin.plans.create');
 Route::post('/admin/services/{service}/suspend', [AdminController::class, 'suspendService'])->name('admin.services.suspend');
 Route::post('/admin/services/{service}/unsuspend', [AdminController::class, 'unsuspendService'])->name('admin.services.unsuspend');

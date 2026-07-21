@@ -85,6 +85,14 @@
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold badge-active uppercase">{{ $svc->status }}</span>
                                 </td>
                                 <td class="py-3 px-4 text-right flex items-center justify-end gap-2">
+                                    <form method="POST" action="{{ route('admin.services.cpanel-credentials', $svc->id) }}">
+                                        @csrf
+                                        <button type="submit" class="px-3 py-1 bg-blue-50 text-[#0059bb] hover:bg-blue-100 font-bold text-[10px] rounded-lg transition-colors flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[12px]">key</span>
+                                            <span>Send Credentials</span>
+                                        </button>
+                                    </form>
+
                                     @if($svc->status === 'active')
                                         <form method="POST" action="{{ route('admin.services.suspend', $svc->id) }}">
                                             @csrf

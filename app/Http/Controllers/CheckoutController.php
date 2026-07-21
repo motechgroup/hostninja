@@ -186,7 +186,7 @@ class CheckoutController extends Controller
         $server = Server::where('status', 'online')->first() ?? Server::first();
         $cleanUser = preg_replace('/[^a-z0-9]/', '', strtolower(substr(explode('.', $primaryDomain)[0], 0, 8)));
 
-        HostingService::create([
+        $hostingService = HostingService::create([
             'user_id' => $user->id,
             'hosting_plan_id' => $selectedPlan->id,
             'server_id' => $server?->id,
@@ -216,6 +216,15 @@ class CheckoutController extends Controller
                 'whois_privacy_enabled' => true,
                 'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
             ]);
+        }
+
+        // Automated Mail Notifications
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\InvoicePaidMail($invoice, $user));
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\ServiceProvisionedMail($hostingService, $user, 'password123'));
+        } catch (\Throwable $e) {
+            // Log mail exception if offline/local
+            \Illuminate\Support\Facades\Log::warning("Checkout Mail dispatch warning: " . $e->getMessage());
         }
 
         session()->forget(['cart_domains', 'cart_plan_id', 'cart_billing_cycle', 'cart_coupon']);

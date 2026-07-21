@@ -76,35 +76,46 @@
                 </div>
 
                 <!-- SMTP Config Box -->
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
-                    <h4 class="font-bold text-xs text-slate-900">SMTP Server Credentials</h4>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-xs text-slate-900">SMTP Server Credentials</h4>
+                        <button type="button" onclick="document.getElementById('test_smtp_modal').classList.remove('hidden')" class="px-3 py-1.5 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">send</span>
+                            <span>Test SMTP Connection</span>
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="text-[11px] font-semibold text-slate-700 block mb-1">SMTP Host</label>
-                            <input type="text" name="smtp_host" value="{{ $settings['smtp_host'] ?? 'smtp.hostninja.cloud' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                            <input type="text" name="smtp_host" value="{{ $settings['smtp_host'] ?? 'smtp.hostninja.cloud' }}" placeholder="mail.yourdomain.com" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                         </div>
                         <div>
                             <label class="text-[11px] font-semibold text-slate-700 block mb-1">SMTP Port</label>
-                            <input type="text" name="smtp_port" value="{{ $settings['smtp_port'] ?? '587' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                            <input type="text" name="smtp_port" value="{{ $settings['smtp_port'] ?? '587' }}" placeholder="587 or 465" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                         </div>
                         <div>
                             <label class="text-[11px] font-semibold text-slate-700 block mb-1">Encryption Protocol</label>
                             <select name="smtp_encryption" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
-                                <option value="tls" selected>TLS (STARTTLS)</option>
-                                <option value="ssl">SSL</option>
+                                <option value="tls" {{ ($settings['smtp_encryption'] ?? 'tls') === 'tls' ? 'selected' : '' }}>TLS (STARTTLS)</option>
+                                <option value="ssl" {{ ($settings['smtp_encryption'] ?? '') === 'ssl' ? 'selected' : '' }}>SSL</option>
                             </select>
                         </div>
                         <div>
                             <label class="text-[11px] font-semibold text-slate-700 block mb-1">SMTP Username</label>
-                            <input type="text" name="smtp_username" value="{{ $settings['smtp_username'] ?? 'notifications@hostninja.cloud' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                            <input type="text" name="smtp_username" value="{{ $settings['smtp_username'] ?? 'notifications@hostninja.cloud' }}" placeholder="user@domain.com" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-slate-700 block mb-1">SMTP Password</label>
+                            <input type="password" name="smtp_password" value="{{ $settings['smtp_password'] ?? '' }}" placeholder="••••••••••••" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                         </div>
                         <div>
                             <label class="text-[11px] font-semibold text-slate-700 block mb-1">Sender Email Address</label>
-                            <input type="text" name="smtp_from_address" value="{{ $settings['smtp_from_address'] ?? 'no-reply@hostninja.cloud' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                            <input type="text" name="smtp_from_address" value="{{ $settings['smtp_from_address'] ?? 'no-reply@hostninja.cloud' }}" placeholder="no-reply@hostninja.cloud" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                         </div>
-                        <div>
-                            <label class="text-[11px] font-semibold text-slate-700 block mb-1">Sender Name</label>
-                            <input type="text" name="smtp_from_name" value="{{ $settings['smtp_from_name'] ?? 'HostNinja Cloud Notifications' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                        <div class="md:col-span-3">
+                            <label class="text-[11px] font-semibold text-slate-700 block mb-1">Sender Display Name</label>
+                            <input type="text" name="smtp_from_name" value="{{ $settings['smtp_from_name'] ?? 'HostNinja Cloud Notifications' }}" placeholder="HostNinja Cloud System" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                         </div>
                     </div>
                 </div>
@@ -125,19 +136,28 @@
                     <!-- Template 2: Invoice Created -->
                     <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="font-bold text-xs text-[#0059bb]">2. Invoice Generated Notification</span>
+                            <span class="font-bold text-xs text-[#0059bb]">2. Invoice Generated & Payment Receipt Notification</span>
                             <button type="button" @click="previewSubject = 'Invoice Issued: {invoice_number}'; previewBody = $refs.tplInvoice.value; showMailPreview = true" class="text-xs text-[#0059bb] font-bold hover:underline">Preview HTML &rarr;</button>
                         </div>
-                        <textarea x-ref="tplInvoice" name="template_invoice_created" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">{{ $settings['template_invoice_created'] ?? "Hi {name},\n\nA new invoice #{invoice_number} for KES {total} has been issued. Please process payment before {due_date}." }}</textarea>
+                        <textarea x-ref="tplInvoice" name="template_invoice_created" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">{{ $settings['template_invoice_created'] ?? "Hi {name},\n\nA new invoice #{invoice_number} for KES {total} has been issued. Thank you for your payment!" }}</textarea>
                     </div>
 
-                    <!-- Template 3: Payment Receipt -->
+                    <!-- Template 3: cPanel & Service Login Credentials -->
                     <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="font-bold text-xs text-emerald-600">3. Payment Received Confirmation</span>
-                            <button type="button" @click="previewSubject = 'Payment Receipt Confirmed'; previewBody = $refs.tplPaid.value; showMailPreview = true" class="text-xs text-[#0059bb] font-bold hover:underline">Preview HTML &rarr;</button>
+                            <span class="font-bold text-xs text-amber-600">3. cPanel & Web Hosting Credentials Notification</span>
+                            <button type="button" @click="previewSubject = 'cPanel Credentials for {domain_name}'; previewBody = $refs.tplCpanel.value; showMailPreview = true" class="text-xs text-[#0059bb] font-bold hover:underline">Preview HTML &rarr;</button>
                         </div>
-                        <textarea x-ref="tplPaid" name="template_payment_received" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">{{ $settings['template_payment_received'] ?? "Hello {name},\n\nWe received your payment of KES {amount} (Ref: {reference}). Thank you for choosing HostNinja Cloud!" }}</textarea>
+                        <textarea x-ref="tplCpanel" name="template_cpanel_credentials" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">{{ $settings['template_cpanel_credentials'] ?? "Hello {name},\n\nYour cPanel account for {domain_name} is active!\nUsername: {username}\nPassword: {password}\ncPanel URL: https://{domain_name}:2083" }}</textarea>
+                    </div>
+
+                    <!-- Template 4: Payment Due Reminder -->
+                    <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xs text-rose-600">4. Payment Due Reminder</span>
+                            <button type="button" @click="previewSubject = 'Payment Reminder: Invoice #{invoice_number}'; previewBody = $refs.tplReminder.value; showMailPreview = true" class="text-xs text-[#0059bb] font-bold hover:underline">Preview HTML &rarr;</button>
+                        </div>
+                        <textarea x-ref="tplReminder" name="template_payment_reminder" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">{{ $settings['template_payment_reminder'] ?? "Hello {name},\n\nThis is a reminder that invoice #{invoice_number} for KES {total} is due on {due_date}. Please log in to complete payment." }}</textarea>
                     </div>
                 </div>
             </div>
@@ -228,6 +248,30 @@
                 <div class="mt-6 flex justify-end">
                     <button type="button" @click="showMailPreview = false" class="px-6 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl">Close Preview</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- MODAL: TEST SMTP CONNECTION -->
+        <div id="test_smtp_modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-md w-full shadow-2xl space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Test SMTP Server Connection</h3>
+                    <button type="button" onclick="document.getElementById('test_smtp_modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
+                </div>
+
+                <form method="POST" action="{{ route('admin.smtp.test') }}" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700 block mb-1">Send Test Email To Address</label>
+                        <input type="email" name="test_email" value="{{ auth()->user()->email }}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900">
+                        <p class="text-[10px] text-slate-400 mt-1">HostNinja will attempt to connect to your configured SMTP server and dispatch a test message.</p>
+                    </div>
+
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="document.getElementById('test_smtp_modal').classList.add('hidden')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl">Cancel</button>
+                        <button type="submit" class="px-5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow">Dispatch Test Mail</button>
+                    </div>
+                </form>
             </div>
         </div>
 

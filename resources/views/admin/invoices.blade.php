@@ -20,7 +20,8 @@
                             <th class="py-3 px-4">Description</th>
                             <th class="py-3 px-4">Total Amount</th>
                             <th class="py-3 px-4">Due Date</th>
-                            <th class="py-3 px-4 text-right">Status</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -31,8 +32,17 @@
                                 <td class="py-4 px-4 text-slate-600 font-semibold">{{ $inv->description }}</td>
                                 <td class="py-4 px-4 font-extrabold text-slate-900">KES {{ number_format($inv->total, 2) }}</td>
                                 <td class="py-4 px-4 text-slate-500">{{ $inv->due_date->format('Y-m-d') }}</td>
-                                <td class="py-4 px-4 text-right">
+                                <td class="py-4 px-4 text-center">
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ $inv->status === 'paid' ? 'badge-active' : 'badge-pending' }} uppercase">{{ $inv->status }}</span>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <form method="POST" action="{{ route('admin.invoices.resend', $inv->id) }}" class="inline">
+                                        @csrf
+                                        <button type="submit" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0059bb] font-bold text-[11px] rounded-xl transition-colors inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-xs">mail</span>
+                                            <span>Resend Email</span>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

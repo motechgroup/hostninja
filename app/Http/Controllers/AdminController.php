@@ -179,4 +179,52 @@ class AdminController extends Controller
 
         return back()->with('success', 'Hosting Plan created!');
     }
+
+    public function testSmtp(Request $request)
+    {
+        $this->ensureAdminAuth();
+        $testEmail = $request->input('test_email', Auth::user()->email);
+
+        try {
+            \App\Services\MailConfigService::applyDynamicSmtpConfig();
+            \Illuminate\Support\Facades\Mail::raw("Hello! This is a test email sent from HostNinja Cloud SMTP server at " . now()->toDateTimeString(), function ($msg) use ($testEmail) {
+                $msg->to($testEmail)->subject("HostNinja Cloud — SMTP Server Test Success");
+            });
+
+            return back()->with('success', "SMTP Connection Verified! Test email dispatched to {$testEmail}.");
+        } catch (\Throwable $e) {
+            return back()->with('error', "SMTP Dispatch Failed: " . $e->getMessage());
+        }
+    }
+
+    public function resendInvoiceEmail(Invoice $invoice)
+    {
+        $this->ensureAdminAuth();
+        $user = $invoice->user;
+
+        try {
+            if ($invoice->status === 'paid') {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\InvoicePaidMail($invoice, $user));
+                return back()->with('success', "Paid Invoice #{$invoice->invoice_number} receipt sent to {$user->email}.");
+            } else {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\PaymentReminderMail($invoice, $user));
+                return back()->with('success', "Payment Due Reminder for Invoice #{$invoice->invoice_number} sent to {$user->email}.");
+            }
+        } catch (\Throwable $e) {
+            return back()->with('error', "Failed to send invoice email: " . $e->getMessage());
+        }
+    }
+
+    public function sendCpanelCredentialsEmail(HostingService $service)
+    {
+        $this->ensureAdminAuth();
+        $user = $service->user;
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\ServiceProvisionedMail($service, $user, 'password123'));
+            return back()->with('success', "cPanel Access credentials for {$service->domain_name} dispatched to {$user->email}.");
+        } catch (\Throwable $e) {
+            return back()->with('error', "Failed to send cPanel credentials: " . $e->getMessage());
+        }
+    }
 }
