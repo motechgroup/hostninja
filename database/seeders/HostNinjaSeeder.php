@@ -194,284 +194,320 @@ class HostNinjaSeeder extends Seeder
         );
 
         // Reseller Commissions
-        ResellerCommission::create([
-            'reseller_id' => $reseller->id,
-            'client_id' => $customer->id,
-            'service_name' => 'Business NVMe Hosting Plan',
-            'sale_amount' => 599.00,
-            'commission_amount' => 119.80,
-            'status' => 'paid',
-        ]);
+        ResellerCommission::firstOrCreate(
+            ['reseller_id' => $reseller->id, 'service_name' => 'Business NVMe Hosting Plan'],
+            [
+                'client_id' => $customer->id,
+                'sale_amount' => 599.00,
+                'commission_amount' => 119.80,
+                'status' => 'paid',
+            ]
+        );
 
-        ResellerCommission::create([
-            'reseller_id' => $reseller->id,
-            'client_id' => $customer->id,
-            'service_name' => 'Domain .co.ke Registration',
-            'sale_amount' => 990.00,
-            'commission_amount' => 148.50,
-            'status' => 'paid',
-        ]);
+        ResellerCommission::firstOrCreate(
+            ['reseller_id' => $reseller->id, 'service_name' => 'Domain .co.ke Registration'],
+            [
+                'client_id' => $customer->id,
+                'sale_amount' => 990.00,
+                'commission_amount' => 148.50,
+                'status' => 'paid',
+            ]
+        );
 
         // Hosting Plans
-        $starterPlan = HostingPlan::create([
-            'name' => 'Starter Plan',
-            'slug' => 'starter',
-            'tagline' => 'Ideal for personal blogs and landing pages',
-            'price_monthly' => 299.00,
-            'price_yearly' => 2990.00,
-            'storage_gb' => 10,
-            'bandwidth_gb' => 100,
-            'email_accounts' => 10,
-            'databases' => 5,
-            'ssl_free' => true,
-            'is_featured' => false,
-            'is_active' => true,
-        ]);
+        $starterPlan = HostingPlan::firstOrCreate(
+            ['slug' => 'starter'],
+            [
+                'name' => 'Starter Plan',
+                'tagline' => 'Ideal for personal blogs and landing pages',
+                'price_monthly' => 299.00,
+                'price_yearly' => 2990.00,
+                'storage_gb' => 10,
+                'bandwidth_gb' => 100,
+                'email_accounts' => 10,
+                'databases' => 5,
+                'ssl_free' => true,
+                'is_featured' => false,
+                'is_active' => true,
+            ]
+        );
 
-        $businessPlan = HostingPlan::create([
-            'name' => 'Business Plan',
-            'slug' => 'business',
-            'tagline' => 'High-performance NVMe storage for growing businesses',
-            'price_monthly' => 599.00,
-            'price_yearly' => 5990.00,
-            'storage_gb' => 50,
-            'bandwidth_gb' => 500,
-            'email_accounts' => 50,
-            'databases' => 25,
-            'ssl_free' => true,
-            'is_featured' => true,
-            'is_active' => true,
-        ]);
+        $businessPlan = HostingPlan::firstOrCreate(
+            ['slug' => 'business'],
+            [
+                'name' => 'Business Plan',
+                'tagline' => 'High-performance NVMe storage for growing businesses',
+                'price_monthly' => 599.00,
+                'price_yearly' => 5990.00,
+                'storage_gb' => 50,
+                'bandwidth_gb' => 500,
+                'email_accounts' => 50,
+                'databases' => 25,
+                'ssl_free' => true,
+                'is_featured' => true,
+                'is_active' => true,
+            ]
+        );
 
-        $proPlan = HostingPlan::create([
-            'name' => 'Professional Plan',
-            'slug' => 'professional',
-            'tagline' => 'Unmatched speed & resources for high traffic sites',
-            'price_monthly' => 1199.00,
-            'price_yearly' => 11990.00,
-            'storage_gb' => 150,
-            'bandwidth_gb' => 1000,
-            'email_accounts' => 100,
-            'databases' => 50,
-            'ssl_free' => true,
-            'is_featured' => false,
-            'is_active' => true,
-        ]);
+        $proPlan = HostingPlan::firstOrCreate(
+            ['slug' => 'professional'],
+            [
+                'name' => 'Professional Plan',
+                'tagline' => 'Unmatched speed & resources for high traffic sites',
+                'price_monthly' => 1199.00,
+                'price_yearly' => 11990.00,
+                'storage_gb' => 150,
+                'bandwidth_gb' => 1000,
+                'email_accounts' => 100,
+                'databases' => 50,
+                'ssl_free' => true,
+                'is_featured' => false,
+                'is_active' => true,
+            ]
+        );
 
-        $enterprisePlan = HostingPlan::create([
-            'name' => 'Enterprise Cloud',
-            'slug' => 'enterprise',
-            'tagline' => 'Dedicated resources & priority VIP 24/7 support',
-            'price_monthly' => 2499.00,
-            'price_yearly' => 24990.00,
-            'storage_gb' => 500,
-            'bandwidth_gb' => 5000,
-            'email_accounts' => 500,
-            'databases' => 200,
-            'ssl_free' => true,
-            'is_featured' => false,
-            'is_active' => true,
-        ]);
+        $enterprisePlan = HostingPlan::firstOrCreate(
+            ['slug' => 'enterprise'],
+            [
+                'name' => 'Enterprise Cloud',
+                'tagline' => 'Dedicated resources & priority VIP 24/7 support',
+                'price_monthly' => 2499.00,
+                'price_yearly' => 24990.00,
+                'storage_gb' => 500,
+                'bandwidth_gb' => 5000,
+                'email_accounts' => 500,
+                'databases' => 200,
+                'ssl_free' => true,
+                'is_featured' => false,
+                'is_active' => true,
+            ]
+        );
 
         // Servers
-        $server1 = Server::create([
-            'name' => 'Nairobi-Edge-01',
-            'ip_address' => '197.248.0.12',
-            'hostname' => 'ns1.hostninja.cloud',
-            'type' => 'cPanel',
-            'status' => 'online',
-            'active_accounts' => 142,
-            'max_accounts' => 500,
-            'disk_usage_percent' => 32,
-            'cpu_usage_percent' => 14,
-        ]);
+        $server1 = Server::firstOrCreate(
+            ['hostname' => 'ns1.hostninja.cloud'],
+            [
+                'name' => 'Nairobi-Edge-01',
+                'ip_address' => '197.248.0.12',
+                'type' => 'cPanel',
+                'status' => 'online',
+                'active_accounts' => 142,
+                'max_accounts' => 500,
+                'disk_usage_percent' => 32,
+                'cpu_usage_percent' => 14,
+            ]
+        );
 
-        $server2 = Server::create([
-            'name' => 'Frankfurt-Cloud-02',
-            'ip_address' => '185.12.90.44',
-            'hostname' => 'ns2.hostninja.cloud',
-            'type' => 'cPanel',
-            'status' => 'online',
-            'active_accounts' => 88,
-            'max_accounts' => 500,
-            'disk_usage_percent' => 19,
-            'cpu_usage_percent' => 9,
-        ]);
+        $server2 = Server::firstOrCreate(
+            ['hostname' => 'ns2.hostninja.cloud'],
+            [
+                'name' => 'Frankfurt-Cloud-02',
+                'ip_address' => '185.12.90.44',
+                'type' => 'cPanel',
+                'status' => 'online',
+                'active_accounts' => 88,
+                'max_accounts' => 500,
+                'disk_usage_percent' => 19,
+                'cpu_usage_percent' => 9,
+            ]
+        );
 
         // Customer Domains
-        Domain::create([
-            'user_id' => $customer->id,
-            'registrar_id' => $resellerClub->id,
-            'domain_name' => 'mybrand.co.ke',
-            'extension' => '.co.ke',
-            'registration_date' => '2025-05-12',
-            'expiry_date' => '2027-05-12',
-            'status' => 'active',
-            'registrar' => 'ResellerClub (LogicBoxes)',
-            'price' => 990.00,
-            'auto_renew' => true,
-            'is_locked' => true,
-            'whois_privacy_enabled' => true,
-            'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
-            'dns_records' => [
-                ['type' => 'A', 'name' => '@', 'value' => '197.248.0.12', 'ttl' => 3600],
-                ['type' => 'CNAME', 'name' => 'www', 'value' => 'mybrand.co.ke', 'ttl' => 3600],
-                ['type' => 'MX', 'name' => '@', 'value' => 'mail.mybrand.co.ke', 'ttl' => 3600],
-            ],
-        ]);
+        Domain::firstOrCreate(
+            ['domain_name' => 'mybrand.co.ke'],
+            [
+                'user_id' => $customer->id,
+                'registrar_id' => $resellerClub->id,
+                'extension' => '.co.ke',
+                'registration_date' => '2025-05-12',
+                'expiry_date' => '2027-05-12',
+                'status' => 'active',
+                'registrar' => 'ResellerClub (LogicBoxes)',
+                'price' => 990.00,
+                'auto_renew' => true,
+                'is_locked' => true,
+                'whois_privacy_enabled' => true,
+                'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
+                'dns_records' => [
+                    ['type' => 'A', 'name' => '@', 'value' => '197.248.0.12', 'ttl' => 3600],
+                    ['type' => 'CNAME', 'name' => 'www', 'value' => 'mybrand.co.ke', 'ttl' => 3600],
+                    ['type' => 'MX', 'name' => '@', 'value' => 'mail.mybrand.co.ke', 'ttl' => 3600],
+                ],
+            ]
+        );
 
-        Domain::create([
-            'user_id' => $customer->id,
-            'registrar_id' => $resellerClub->id,
-            'domain_name' => 'hypergrowth.com',
-            'extension' => '.com',
-            'registration_date' => '2025-11-20',
-            'expiry_date' => '2027-11-20',
-            'status' => 'active',
-            'registrar' => 'ResellerClub (LogicBoxes)',
-            'price' => 1200.00,
-            'auto_renew' => true,
-            'is_locked' => true,
-            'whois_privacy_enabled' => false,
-            'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
-            'dns_records' => [
-                ['type' => 'A', 'name' => '@', 'value' => '185.12.90.44', 'ttl' => 3600],
-                ['type' => 'CNAME', 'name' => 'www', 'value' => 'hypergrowth.com', 'ttl' => 3600],
-            ],
-        ]);
+        Domain::firstOrCreate(
+            ['domain_name' => 'hypergrowth.com'],
+            [
+                'user_id' => $customer->id,
+                'registrar_id' => $resellerClub->id,
+                'extension' => '.com',
+                'registration_date' => '2025-11-20',
+                'expiry_date' => '2027-11-20',
+                'status' => 'active',
+                'registrar' => 'ResellerClub (LogicBoxes)',
+                'price' => 1200.00,
+                'auto_renew' => true,
+                'is_locked' => true,
+                'whois_privacy_enabled' => false,
+                'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
+                'dns_records' => [
+                    ['type' => 'A', 'name' => '@', 'value' => '185.12.90.44', 'ttl' => 3600],
+                    ['type' => 'CNAME', 'name' => 'www', 'value' => 'hypergrowth.com', 'ttl' => 3600],
+                ],
+            ]
+        );
 
-        Domain::create([
-            'user_id' => $customer->id,
-            'registrar_id' => $resellerClub->id,
-            'domain_name' => 'ninjalabs.io',
-            'extension' => '.io',
-            'registration_date' => '2025-12-01',
-            'expiry_date' => '2026-12-01',
-            'status' => 'active',
-            'registrar' => 'ResellerClub (LogicBoxes)',
-            'price' => 4500.00,
-            'auto_renew' => false,
-            'is_locked' => true,
-            'whois_privacy_enabled' => true,
-            'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
-        ]);
+        Domain::firstOrCreate(
+            ['domain_name' => 'ninjalabs.io'],
+            [
+                'user_id' => $customer->id,
+                'registrar_id' => $resellerClub->id,
+                'extension' => '.io',
+                'registration_date' => '2025-12-01',
+                'expiry_date' => '2026-12-01',
+                'status' => 'active',
+                'registrar' => 'ResellerClub (LogicBoxes)',
+                'price' => 4500.00,
+                'auto_renew' => false,
+                'is_locked' => true,
+                'whois_privacy_enabled' => true,
+                'nameservers' => ['ns1.hostninja.cloud', 'ns2.hostninja.cloud'],
+            ]
+        );
 
         // Hosting Services
-        HostingService::create([
-            'user_id' => $customer->id,
-            'hosting_plan_id' => $businessPlan->id,
-            'server_id' => $server1->id,
-            'domain_name' => 'mybrand.co.ke',
-            'username' => 'mybrandc',
-            'status' => 'active',
-            'billing_cycle' => 'monthly',
-            'amount' => 599.00,
-            'next_due_date' => '2026-08-12',
-        ]);
+        HostingService::firstOrCreate(
+            ['domain_name' => 'mybrand.co.ke'],
+            [
+                'user_id' => $customer->id,
+                'hosting_plan_id' => $businessPlan->id,
+                'server_id' => $server1->id,
+                'username' => 'mybrandc',
+                'status' => 'active',
+                'billing_cycle' => 'monthly',
+                'amount' => 599.00,
+                'next_due_date' => '2026-08-12',
+            ]
+        );
 
-        HostingService::create([
-            'user_id' => $customer->id,
-            'hosting_plan_id' => $starterPlan->id,
-            'server_id' => $server2->id,
-            'domain_name' => 'hypergrowth.com',
-            'username' => 'hypergrw',
-            'status' => 'active',
-            'billing_cycle' => 'monthly',
-            'amount' => 299.00,
-            'next_due_date' => '2026-08-20',
-        ]);
+        HostingService::firstOrCreate(
+            ['domain_name' => 'hypergrowth.com'],
+            [
+                'user_id' => $customer->id,
+                'hosting_plan_id' => $starterPlan->id,
+                'server_id' => $server2->id,
+                'username' => 'hypergrw',
+                'status' => 'active',
+                'billing_cycle' => 'monthly',
+                'amount' => 299.00,
+                'next_due_date' => '2026-08-20',
+            ]
+        );
 
         // Invoices & Payments
-        $inv1 = Invoice::create([
-            'user_id' => $customer->id,
-            'invoice_number' => 'INV-2026-001',
-            'description' => 'Business Hosting Plan - mybrand.co.ke (1 Month)',
-            'amount' => 599.00,
-            'tax' => 95.84,
-            'total' => 694.84,
-            'status' => 'paid',
-            'due_date' => '2026-07-12',
-            'paid_at' => '2026-07-10 14:32:00',
-        ]);
+        $inv1 = Invoice::firstOrCreate(
+            ['invoice_number' => 'INV-2026-001'],
+            [
+                'user_id' => $customer->id,
+                'description' => 'Business Hosting Plan - mybrand.co.ke (1 Month)',
+                'amount' => 599.00,
+                'tax' => 95.84,
+                'total' => 694.84,
+                'status' => 'paid',
+                'due_date' => '2026-07-12',
+                'paid_at' => '2026-07-10 14:32:00',
+            ]
+        );
 
-        Payment::create([
-            'invoice_id' => $inv1->id,
-            'user_id' => $customer->id,
-            'payment_method' => 'mpesa',
-            'transaction_reference' => 'QHK92819XX',
-            'amount' => 694.84,
-            'status' => 'completed',
-        ]);
+        Payment::firstOrCreate(
+            ['transaction_reference' => 'QHK92819XX'],
+            [
+                'invoice_id' => $inv1->id,
+                'user_id' => $customer->id,
+                'payment_method' => 'mpesa',
+                'amount' => 694.84,
+                'status' => 'completed',
+            ]
+        );
 
-        $inv2 = Invoice::create([
-            'user_id' => $customer->id,
-            'invoice_number' => 'INV-2026-002',
-            'description' => 'Domain Registration .co.ke - mybrand.co.ke (1 Year)',
-            'amount' => 990.00,
-            'tax' => 158.40,
-            'total' => 1148.40,
-            'status' => 'paid',
-            'due_date' => '2026-05-12',
-            'paid_at' => '2026-05-12 09:15:00',
-        ]);
+        $inv2 = Invoice::firstOrCreate(
+            ['invoice_number' => 'INV-2026-002'],
+            [
+                'user_id' => $customer->id,
+                'description' => 'Domain Registration .co.ke - mybrand.co.ke (1 Year)',
+                'amount' => 990.00,
+                'tax' => 158.40,
+                'total' => 1148.40,
+                'status' => 'paid',
+                'due_date' => '2026-05-12',
+                'paid_at' => '2026-05-12 09:15:00',
+            ]
+        );
 
-        Payment::create([
-            'invoice_id' => $inv2->id,
-            'user_id' => $customer->id,
-            'payment_method' => 'mpesa',
-            'transaction_reference' => 'QGF81273YY',
-            'amount' => 1148.40,
-            'status' => 'completed',
-        ]);
+        Payment::firstOrCreate(
+            ['transaction_reference' => 'QGF81273YY'],
+            [
+                'invoice_id' => $inv2->id,
+                'user_id' => $customer->id,
+                'payment_method' => 'mpesa',
+                'amount' => 1148.40,
+                'status' => 'completed',
+            ]
+        );
 
-        Invoice::create([
-            'user_id' => $customer->id,
-            'invoice_number' => 'INV-2026-003',
-            'description' => 'Professional Hosting Upgrade - hypergrowth.com (Monthly)',
-            'amount' => 1199.00,
-            'tax' => 191.84,
-            'total' => 1390.84,
-            'status' => 'pending',
-            'due_date' => '2026-07-28',
-        ]);
+        Invoice::firstOrCreate(
+            ['invoice_number' => 'INV-2026-003'],
+            [
+                'user_id' => $customer->id,
+                'description' => 'Professional Hosting Upgrade - hypergrowth.com (Monthly)',
+                'amount' => 1199.00,
+                'tax' => 191.84,
+                'total' => 1390.84,
+                'status' => 'pending',
+                'due_date' => '2026-07-28',
+            ]
+        );
 
         // Support Tickets
-        $ticket1 = Ticket::create([
-            'user_id' => $customer->id,
-            'ticket_number' => 'TICK-8841',
-            'subject' => 'DNS Propagation Delay for hypergrowth.com',
-            'category' => 'domain',
-            'priority' => 'high',
-            'status' => 'answered',
-            'assigned_to' => $agent->id,
-        ]);
+        $ticket1 = Ticket::firstOrCreate(
+            ['ticket_number' => 'TICK-8841'],
+            [
+                'user_id' => $customer->id,
+                'subject' => 'DNS Propagation Delay for hypergrowth.com',
+                'category' => 'domain',
+                'priority' => 'high',
+                'status' => 'answered',
+                'assigned_to' => $agent->id,
+            ]
+        );
 
-        TicketMessage::create([
-            'ticket_id' => $ticket1->id,
-            'user_id' => $customer->id,
-            'message' => 'Hello Support, I updated my nameservers 4 hours ago to ns1.hostninja.cloud. How long will full DNS propagation take?',
-        ]);
+        TicketMessage::firstOrCreate(
+            ['ticket_id' => $ticket1->id, 'user_id' => $customer->id, 'message' => 'Hello Support, I updated my nameservers 4 hours ago to ns1.hostninja.cloud. How long will full DNS propagation take?']
+        );
 
-        TicketMessage::create([
-            'ticket_id' => $ticket1->id,
-            'user_id' => $agent->id,
-            'message' => 'Hi David! Thanks for reaching out. Modern TLD updates usually propagate within 2 to 6 hours. I checked your domain records and ns1.hostninja.cloud is already responding correctly in Nairobi and Europe.',
-        ]);
+        TicketMessage::firstOrCreate(
+            ['ticket_id' => $ticket1->id, 'user_id' => $agent->id, 'message' => 'Hi David! Thanks for reaching out. Modern TLD updates usually propagate within 2 to 6 hours. I checked your domain records and ns1.hostninja.cloud is already responding correctly in Nairobi and Europe.']
+        );
 
-        $ticket2 = Ticket::create([
-            'user_id' => $customer->id,
-            'ticket_number' => 'TICK-8890',
-            'subject' => 'M-Pesa STK Push Automatic Confirmation Inquiry',
-            'category' => 'billing',
-            'priority' => 'medium',
-            'status' => 'open',
-            'assigned_to' => null,
-        ]);
+        $ticket2 = Ticket::firstOrCreate(
+            ['ticket_number' => 'TICK-8890'],
+            [
+                'user_id' => $customer->id,
+                'subject' => 'M-Pesa STK Push Automatic Confirmation Inquiry',
+                'category' => 'billing',
+                'priority' => 'medium',
+                'status' => 'open',
+                'assigned_to' => null,
+            ]
+        );
 
-        TicketMessage::create([
-            'ticket_id' => $ticket2->id,
-            'user_id' => $customer->id,
-            'message' => 'Hi, does HostNinja support instant STK push auto-activation for pending invoices?',
-        ]);
+        TicketMessage::firstOrCreate(
+            ['ticket_id' => $ticket2->id, 'user_id' => $customer->id, 'message' => 'Hi, does HostNinja support instant STK push auto-activation for pending invoices?']
+        );
+
+        TicketMessage::firstOrCreate(
+            ['ticket_id' => $ticket2->id, 'user_id' => $customer->id, 'message' => 'Hi, does HostNinja support instant STK push auto-activation for pending invoices?']
+        );
     }
 }
