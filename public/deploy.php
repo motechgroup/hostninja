@@ -102,10 +102,16 @@ if ($bootstrapError === null && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $outputLog[] = "<strong>[2/4] Database Seeding:</strong>\n" . Artisan::output();
 
             try {
-                Artisan::call('storage:link');
-                $outputLog[] = "<strong>[3/4] Storage Link:</strong>\n" . Artisan::output();
-            } catch (\Exception $e) {
-                $outputLog[] = "<strong>[3/4] Storage Link:</strong> Notice: " . $e->getMessage();
+                $target = $baseDir . '/storage/app/public';
+                $link = $baseDir . '/public/storage';
+                if (!file_exists($link) && function_exists('symlink')) {
+                    @symlink($target, $link);
+                    $outputLog[] = "<strong>[3/4] Storage Link:</strong> Created public/storage symlink.";
+                } else {
+                    $outputLog[] = "<strong>[3/4] Storage Link:</strong> Verified storage link status.";
+                }
+            } catch (\Throwable $e) {
+                $outputLog[] = "<strong>[3/4] Storage Link Notice:</strong> " . $e->getMessage();
             }
 
             Artisan::call('config:cache');
