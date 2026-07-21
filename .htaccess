@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent direct browsing of sensitive files and directories
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package\.(json|lock)|storage|app|bootstrap|config|database|resources|routes) - [F,L,NC]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /public/
+    </IfModule>
+</IfModule>
