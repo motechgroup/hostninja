@@ -125,13 +125,13 @@
                 </div>
             </div>
 
-            <!-- Dedicated Navigation Page Links -->
+            <!-- Instant Alpine.js Navigation Tabs -->
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
-                <a href="{{ route('dashboard') }}" :class="currentTab === 'overview' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Overview</a>
-                <a href="{{ route('dashboard.services') }}" :class="currentTab === 'services' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Hosting Services ({{ count($hostingServices) }})</a>
-                <a href="{{ route('dashboard.domains') }}" :class="currentTab === 'domains' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Domains ({{ count($domains) }})</a>
-                <a href="{{ route('dashboard.invoices') }}" :class="currentTab === 'billing' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Invoices & Billing</a>
-                <a href="{{ route('dashboard.tickets') }}" :class="currentTab === 'support' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Support Desk</a>
+                <button type="button" @click="currentTab = 'overview'" :class="currentTab === 'overview' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Overview</button>
+                <button type="button" @click="currentTab = 'services'" :class="currentTab === 'services' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Hosting Services ({{ count($hostingServices) }})</button>
+                <button type="button" @click="currentTab = 'domains'" :class="currentTab === 'domains' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Domains ({{ count($domains) }})</button>
+                <button type="button" @click="currentTab = 'billing'" :class="currentTab === 'billing' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Invoices & Billing</button>
+                <button type="button" @click="currentTab = 'support'" :class="currentTab === 'support' ? 'border-[#0059bb] text-[#0059bb] bg-[#0059bb]/10 font-bold' : 'border-transparent text-slate-600 hover:text-slate-900'" class="px-5 py-2.5 border-b-2 text-xs rounded-t-xl transition-all whitespace-nowrap">Support Desk</button>
             </div>
 
             <!-- OVERVIEW SECTION -->
