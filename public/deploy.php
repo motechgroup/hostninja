@@ -10,10 +10,40 @@ define('LARAVEL_START', microtime(true));
 $baseDir = __DIR__ . '/..';
 $envFile = $baseDir . '/.env';
 
-// Check if vendor/autoload.php exists
+// Check if vendor/autoload.php exists; if missing, check if vendor.zip is available to auto-extract
 if (!file_exists($baseDir . '/vendor/autoload.php')) {
-    die("<h1>Composer Dependencies Missing</h1><p>Please upload the <code>vendor/</code> directory or run <code>composer install</code>.</p>");
+    $zipFile = $baseDir . '/vendor.zip';
+    if (file_exists($zipFile)) {
+        $extracted = false;
+        if (class_exists('ZipArchive')) {
+            $zip = new ZipArchive();
+            if ($zip->open($zipFile) === TRUE) {
+                $zip->extractTo($baseDir);
+                $zip->close();
+                $extracted = true;
+            }
+        }
+        if (!$extracted && function_exists('exec')) {
+            @exec("cd " . escapeshellarg($baseDir) . " && unzip vendor.zip");
+            if (file_exists($baseDir . '/vendor/autoload.php')) {
+                $extracted = true;
+            }
+        }
+    }
+
+    if (!file_exists($baseDir . '/vendor/autoload.php')) {
+        echo "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Vendor Dependencies Required</title>";
+        echo "<style>body{font-family:sans-serif;background:#090d16;color:#f3f4f6;padding:50px;text-align:center;}.box{max-width:600px;margin:0 auto;background:#111827;border:1px solid #1f2937;padding:30px;border-radius:12px;}h1{color:#ef4444;}code{background:#1f2937;padding:3px 8px;border-radius:4px;color:#a5b4fc;}</style></head><body>";
+        echo "<div class='box'><h1>Composer Dependencies Missing</h1>";
+        echo "<p>To activate your shared hosting installation without SSH:</p>";
+        echo "<ol style='text-align:left;line-height:1.8;'>";
+        echo "<li>Upload <code>vendor.zip</code> into your project root folder (<code>/home/zrnixzre/host.saas/</code>) via cPanel File Manager.</li>";
+        echo "<li>Refresh this page, and <code>deploy.php</code> will automatically unzip <code>vendor.zip</code> and boot your app!</li>";
+        echo "</ol></div></body></html>";
+        exit;
+    }
 }
+
 
 require $baseDir . '/vendor/autoload.php';
 $app = require_once $baseDir . '/bootstrap/app.php';
