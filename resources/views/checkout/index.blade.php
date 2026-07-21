@@ -38,7 +38,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('checkout.process') }}" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <form id="checkout_form" method="POST" action="{{ route('checkout.process') }}" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 @csrf
 
                 <!-- Left 8 Columns: Configuration & Details -->
@@ -67,7 +67,7 @@
                                             <span class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900 block">{{ $hp->name }}</span>
                                             <span class="text-[11px] text-slate-500">{{ $hp->storage_gb }}GB NVMe Storage • {{ $hp->bandwidth_gb }}GB BW</span>
                                         </div>
-                                        <input type="radio" name="plan_id_selector" value="{{ $hp->id }}" {{ $selectedPlan->id === $hp->id ? 'checked' : '' }} onclick="document.getElementById('plan_id_form_{{ $hp->id }}').submit()" class="w-4 h-4 text-[#0059bb] focus:ring-0">
+                                        <input type="radio" name="plan_id_option" value="{{ $hp->id }}" {{ $selectedPlan->id === $hp->id ? 'checked' : '' }} onclick="document.getElementById('plan_id_form_{{ $hp->id }}').submit()" class="w-4 h-4 text-[#0059bb] focus:ring-0">
                                     </div>
                                     <div class="flex items-baseline justify-between pt-2 border-t border-slate-200/60 text-xs">
                                         <span class="font-extrabold text-[#0059bb] text-base">KES {{ number_format($hp->price_monthly) }}<span class="text-slate-500 text-[10px] font-normal">/mo</span></span>
@@ -77,14 +77,6 @@
                             @endforeach
                         </div>
                     </div>
-
-                    <!-- Hidden Forms to trigger Plan change -->
-                    @foreach($hostingPlans as $hp)
-                        <form id="plan_id_form_{{ $hp->id }}" method="POST" action="{{ route('checkout.plan') }}" class="hidden">
-                            @csrf
-                            <input type="hidden" name="plan_id" value="{{ $hp->id }}">
-                        </form>
-                    @endforeach
 
                     <!-- 2. Domain Configuration Card -->
                     <div class="bg-white p-8 rounded-3xl border border-slate-200/90 shadow-sm space-y-6">
@@ -114,7 +106,7 @@
                                         </div>
                                         <div class="flex items-center gap-3">
                                             <span class="font-extrabold text-slate-900 text-sm">KES {{ number_format($domPrice, 2) }}</span>
-                                            <button type="submit" formaction="{{ route('checkout.domain.remove') }}" name="domain" value="{{ $domName }}" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Remove</button>
+                                            <button type="button" onclick="document.getElementById('remove_domain_form_{{ Str::slug($domName) }}').submit()" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Remove</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -272,7 +264,7 @@
                         </div>
 
                         <!-- Action Submit Button -->
-                        <button type="submit" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
                             <span>Complete Order & Activate Services 🚀</span>
                         </button>
 
@@ -292,7 +284,21 @@
                 </div>
             </form>
 
-            <!-- Auxiliary Coupon Form -->
+            <!-- Auxiliary Forms OUTSIDE main form -->
+            @foreach($hostingPlans as $hp)
+                <form id="plan_id_form_{{ $hp->id }}" method="POST" action="{{ route('checkout.plan') }}" class="hidden">
+                    @csrf
+                    <input type="hidden" name="plan_id" value="{{ $hp->id }}">
+                </form>
+            @endforeach
+
+            @foreach($cartDomains as $domName => $domPrice)
+                <form id="remove_domain_form_{{ Str::slug($domName) }}" method="POST" action="{{ route('checkout.domain.remove') }}" class="hidden">
+                    @csrf
+                    <input type="hidden" name="domain" value="{{ $domName }}">
+                </form>
+            @endforeach
+
             <form id="coupon_form" method="POST" action="{{ route('checkout.coupon') }}" class="hidden">
                 @csrf
             </form>
