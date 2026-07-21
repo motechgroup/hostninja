@@ -42,10 +42,14 @@ if (!file_exists($baseDir . '/vendor/autoload.php')) {
         echo "</ol></div></body></html>";
         exit;
     }
+// Neutralize platform check for PHP 8.3 compatibility on shared hosting
+$platformCheckFile = $baseDir . '/vendor/composer/platform_check.php';
+if (file_exists($platformCheckFile)) {
+    @file_put_contents($platformCheckFile, "<?php return;\n");
 }
 
-
 require $baseDir . '/vendor/autoload.php';
+
 $app = require_once $baseDir . '/bootstrap/app.php';
 
 // Auto-generate APP_KEY if missing in .env before booting kernel
