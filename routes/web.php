@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -13,7 +14,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/hosting', [HomeController::class, 'hosting'])->name('hosting.index');
 Route::get('/domains/search', [HomeController::class, 'domainSearch'])->name('domains.search');
 
-// Checkout & Cart System Routes
+// Shopping Cart Dedicated Page & Actions
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/plan/remove', [CartController::class, 'removePlan'])->name('cart.plan.remove');
+Route::post('/cart/domain/remove', [CartController::class, 'removeDomain'])->name('cart.domain.remove');
+
+// Checkout & Order System Routes
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout/plan', [CheckoutController::class, 'selectPlan'])->name('checkout.plan');
 Route::post('/checkout/domain/remove', [CheckoutController::class, 'removeDomain'])->name('checkout.domain.remove');

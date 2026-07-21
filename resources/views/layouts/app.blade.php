@@ -41,8 +41,69 @@
                     </div>
                 </div>
 
-                <!-- Right Profile / Auth Action Buttons -->
+                <!-- Right Profile, Cart & Auth Action Buttons -->
                 <div class="hidden md:flex items-center gap-4">
+                    @php
+                        $cartPlanId = session('cart_plan_id');
+                        $cartPlan = $cartPlanId ? \App\Models\HostingPlan::find($cartPlanId) : null;
+                        $cartDomains = session('cart_domains', []);
+                        $cartBillingCycle = session('cart_billing_cycle', 'monthly');
+                        $cartItemCount = ($cartPlan ? 1 : 0) + count($cartDomains);
+                        $cartPlanPrice = $cartPlan ? (($cartBillingCycle === 'yearly') ? $cartPlan->price_yearly : $cartPlan->price_monthly) : 0;
+                        $cartSubtotal = $cartPlanPrice + array_sum($cartDomains);
+                    @endphp
+
+                    <!-- Persistent Header Shopping Cart Widget -->
+                    <div class="relative" x-data="{ cartOpen: false }">
+                        <a href="{{ route('cart.index') }}" @mouseenter="cartOpen = true" class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 transition-colors">
+                            <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                            @if($cartItemCount > 0)
+                                <span class="absolute -top-1.5 -right-1.5 bg-[#0059bb] text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                                    {{ $cartItemCount }}
+                                </span>
+                            @endif
+                        </a>
+
+                        <!-- Cart Dropdown Preview -->
+                        <div x-show="cartOpen" @mouseleave="cartOpen = false" @click.away="cartOpen = false" class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl p-4 z-50 border border-slate-200" x-cloak>
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                                <span class="font-['Hanken_Grotesk'] text-sm font-bold text-slate-900">Shopping Cart ({{ $cartItemCount }})</span>
+                                <span class="text-xs font-bold text-[#0059bb]">KES {{ number_format($cartSubtotal, 2) }}</span>
+                            </div>
+
+                            @if($cartItemCount > 0)
+                                <div class="space-y-2 max-h-48 overflow-y-auto divide-y divide-slate-100 text-xs">
+                                    @if($cartPlan)
+                                        <div class="pt-2 flex justify-between items-center">
+                                            <div>
+                                                <span class="font-bold text-slate-900 block">{{ $cartPlan->name }}</span>
+                                                <span class="text-[10px] text-slate-400">Hosting Package</span>
+                                            </div>
+                                            <span class="font-bold text-[#0059bb]">KES {{ number_format($cartPlanPrice) }}</span>
+                                        </div>
+                                    @endif
+
+                                    @foreach($cartDomains as $dName => $dPrice)
+                                        <div class="pt-2 flex justify-between items-center">
+                                            <div>
+                                                <span class="font-bold text-slate-900 block">{{ $dName }}</span>
+                                                <span class="text-[10px] text-emerald-600 font-semibold">1 Yr Domain</span>
+                                            </div>
+                                            <span class="font-bold text-slate-800">KES {{ number_format($dPrice, 2) }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <div class="pt-3 border-t border-slate-100 flex gap-2 mt-3">
+                                    <a href="{{ route('cart.index') }}" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-center font-bold text-xs rounded-xl transition-colors">View Cart</a>
+                                    <a href="{{ route('checkout.index') }}" class="flex-1 py-2 bg-[#0059bb] hover:bg-blue-600 text-white text-center font-bold text-xs rounded-xl shadow transition-colors">Checkout</a>
+                                </div>
+                            @else
+                                <p class="text-xs text-slate-400 text-center py-4">Your cart is empty.</p>
+                            @endif
+                        </div>
+                    </div>
+
                     @auth
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center gap-3 bg-slate-100 border border-slate-200 px-3.5 py-1.5 rounded-xl hover:border-slate-300 transition-all">
