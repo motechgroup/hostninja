@@ -89,7 +89,16 @@
                                                 <span class="font-bold text-slate-900 block">{{ $dName }}</span>
                                                 <span class="text-[10px] text-emerald-600 font-semibold">1 Yr Domain</span>
                                             </div>
-                                            <span class="font-bold text-slate-800">KES {{ number_format($dPrice, 2) }}</span>
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-slate-800">KES {{ number_format($dPrice, 2) }}</span>
+                                                <form method="POST" action="{{ route('cart.domain.remove') }}" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="domain" value="{{ $dName }}">
+                                                    <button type="submit" title="Remove domain" class="text-slate-400 hover:text-rose-600 transition-colors">
+                                                        <span class="material-symbols-outlined text-xs">close</span>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>

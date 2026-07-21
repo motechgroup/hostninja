@@ -34,8 +34,10 @@ class DomainSearch extends Component
 
     public function mount(RegistrarManager $manager): void
     {
-        $this->query = 'hostninja.com';
-        $this->search($manager);
+        if (request()->has('domain')) {
+            $this->query = request()->query('domain');
+            $this->search($manager);
+        }
     }
 
     public function toggleAiMode(): void
@@ -187,7 +189,7 @@ class DomainSearch extends Component
         $this->hasSearched = true;
     }
 
-    public function addToCart(string $domainName, float $price)
+    public function addToCart(string $domainName, float $price): void
     {
         $cart = session()->get('cart_domains', []);
         $priceKes = ($price < 100) ? round($price * 130, 2) : $price;
@@ -196,7 +198,7 @@ class DomainSearch extends Component
 
         $this->cartMessage = "{$domainName} (KES " . number_format($priceKes, 2) . ") added to registration cart!";
 
-        return redirect()->route('checkout.index', ['domain' => $domainName]);
+        $this->redirectRoute('checkout.index', ['domain' => $domainName]);
     }
 
     public function render()
