@@ -16,14 +16,18 @@
                 <h1 class="font-['Hanken_Grotesk'] text-2xl font-extrabold text-slate-900">Infrastructure & System Overview</h1>
                 <p class="text-xs text-slate-500">Real-time enterprise metrics, servers, client accounts, and billing management.</p>
             </div>
-            <div class="flex gap-3">
-                <a href="{{ route('admin.settings') }}" class="px-4 py-2 bg-slate-900 hover:bg-[#0059bb] text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">settings</span>
-                    <span>System Settings & Gateways</span>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('admin.payment-gateways') }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">payments</span>
+                    <span>Payment Gateways</span>
                 </a>
-                <a href="{{ route('reseller.dashboard') }}" class="px-4 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-2">
+                <a href="{{ route('admin.settings') }}" class="px-4 py-2 bg-slate-900 hover:bg-[#0059bb] text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">settings</span>
+                    <span>Settings</span>
+                </a>
+                <a href="{{ route('reseller.dashboard') }}" class="px-4 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-sm">handshake</span>
-                    <span>Reseller Console</span>
+                    <span>Reseller</span>
                 </a>
             </div>
         </div>

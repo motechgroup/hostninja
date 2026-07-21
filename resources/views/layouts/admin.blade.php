@@ -60,6 +60,11 @@
                 <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider font-['JetBrains_Mono']">Integrations</span>
             </div>
 
+            <a href="{{ route('admin.payment-gateways') }}" class="flex items-center gap-3 {{ request()->routeIs('admin.payment-gateways*') ? 'bg-[#0059bb] text-white shadow-md shadow-blue-500/20' : 'text-slate-600 hover:bg-slate-100' }} rounded-xl px-4 py-2.5 font-semibold text-xs transition-colors">
+                <span class="material-symbols-outlined text-lg">payments</span>
+                <span>Payment Gateways</span>
+            </a>
+
             <a href="{{ route('admin.registrars') }}" class="flex items-center gap-3 {{ request()->routeIs('admin.registrars*') ? 'bg-[#0059bb] text-white shadow-md shadow-blue-500/20' : 'text-slate-600 hover:bg-slate-100' }} rounded-xl px-4 py-2.5 font-semibold text-xs transition-colors">
                 <span class="material-symbols-outlined text-lg">domain_verification</span>
                 <span>Registrars</span>

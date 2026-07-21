@@ -229,6 +229,14 @@ class AdminController extends Controller
         }
     }
 
+    public function paymentGateways()
+    {
+        $this->ensureAdminAuth();
+        $settings = Setting::all()->pluck('value', 'key');
+        $paymentMethods = \App\Models\PaymentMethod::orderBy('sort_order', 'asc')->get();
+        return view('admin.payment_gateways', compact('settings', 'paymentMethods'));
+    }
+
     public function togglePaymentMethod(\App\Models\PaymentMethod $method)
     {
         $this->ensureAdminAuth();
@@ -258,6 +266,26 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', "Payment method '{$request->name}' created successfully!");
+    }
+
+    public function updatePaymentMethod(Request $request, \App\Models\PaymentMethod $method)
+    {
+        $this->ensureAdminAuth();
+        $request->validate([
+            'name' => 'required|string',
+            'category' => 'required|string',
+            'sort_order' => 'required|integer',
+            'icon_svg' => 'required|string',
+        ]);
+
+        $method->update([
+            'name' => $request->name,
+            'category' => $request->category,
+            'sort_order' => $request->sort_order,
+            'icon_svg' => $request->icon_svg,
+        ]);
+
+        return back()->with('success', "Payment method '{$method->name}' updated!");
     }
 
     public function deletePaymentMethod(\App\Models\PaymentMethod $method)

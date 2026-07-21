@@ -74,7 +74,9 @@ Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name
 Route::post('/admin/smtp/test', [AdminController::class, 'testSmtp'])->name('admin.smtp.test');
 Route::post('/admin/invoices/{invoice}/resend-email', [AdminController::class, 'resendInvoiceEmail'])->name('admin.invoices.resend');
 Route::post('/admin/services/{service}/send-cpanel-credentials', [AdminController::class, 'sendCpanelCredentialsEmail'])->name('admin.services.cpanel-credentials');
+Route::get('/admin/payment-gateways', [AdminController::class, 'paymentGateways'])->name('admin.payment-gateways');
 Route::post('/admin/payment-methods/{method}/toggle', [AdminController::class, 'togglePaymentMethod'])->name('admin.payment-methods.toggle');
+Route::post('/admin/payment-methods/{method}/update', [AdminController::class, 'updatePaymentMethod'])->name('admin.payment-methods.update');
 Route::post('/admin/payment-methods', [AdminController::class, 'createPaymentMethod'])->name('admin.payment-methods.create');
 Route::delete('/admin/payment-methods/{method}', [AdminController::class, 'deletePaymentMethod'])->name('admin.payment-methods.delete');
 Route::get('/admin/integrations/registrars', [AdminController::class, 'registrars'])->name('admin.registrars');

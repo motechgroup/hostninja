@@ -88,6 +88,50 @@ class PaymentMethodsFooterTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_access_payment_gateways_dashboard()
+    {
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'role' => 'admin',
+            'password' => bcrypt('password'),
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.payment-gateways'));
+        $response->assertStatus(200);
+        $response->assertSee('Payment Gateways');
+    }
+
+    public function test_admin_can_update_payment_method()
+    {
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'role' => 'admin',
+            'password' => bcrypt('password'),
+        ]);
+
+        $pm = PaymentMethod::create([
+            'name' => 'M-Pesa Express',
+            'code' => 'mpesa',
+            'category' => 'mobile',
+            'icon_svg' => '<svg viewBox="0 0 36 24"></svg>',
+            'is_enabled' => true,
+            'sort_order' => 1,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('admin.payment-methods.update', $pm->id), [
+            'name' => 'M-Pesa STK Direct',
+            'category' => 'mobile',
+            'sort_order' => 5,
+            'icon_svg' => '<svg viewBox="0 0 36 24"><text>NEW_SVG</text></svg>',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertEquals('M-Pesa STK Direct', $pm->fresh()->name);
+        $this->assertEquals(5, $pm->fresh()->sort_order);
+    }
+
     public function test_footer_displays_enabled_payment_methods()
     {
         Setting::setKey('show_footer_payment_methods', '1', 'payment');
