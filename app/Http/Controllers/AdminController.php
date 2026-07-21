@@ -106,7 +106,8 @@ class AdminController extends Controller
     {
         $this->ensureAdminAuth();
         $settings = Setting::all()->pluck('value', 'key');
-        return view('admin.settings', compact('settings'));
+        $paymentMethods = \App\Models\PaymentMethod::orderBy('sort_order', 'asc')->get();
+        return view('admin.settings', compact('settings', 'paymentMethods'));
     }
 
     public function registrars()
@@ -226,5 +227,44 @@ class AdminController extends Controller
         } catch (\Throwable $e) {
             return back()->with('error', "Failed to send cPanel credentials: " . $e->getMessage());
         }
+    }
+
+    public function togglePaymentMethod(\App\Models\PaymentMethod $method)
+    {
+        $this->ensureAdminAuth();
+        $method->update(['is_enabled' => !$method->is_enabled]);
+        $status = $method->is_enabled ? 'enabled' : 'disabled';
+        return back()->with('success', "Payment method {$method->name} has been {$status}.");
+    }
+
+    public function createPaymentMethod(Request $request)
+    {
+        $this->ensureAdminAuth();
+        $request->validate([
+            'name' => 'required|string',
+            'code' => 'required|string|unique:payment_methods,code',
+            'category' => 'required|string',
+            'icon_svg' => 'required|string',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        \App\Models\PaymentMethod::create([
+            'name' => $request->name,
+            'code' => \Illuminate\Support\Str::slug($request->code),
+            'category' => $request->category,
+            'icon_svg' => $request->icon_svg,
+            'sort_order' => $request->sort_order ?? 99,
+            'is_enabled' => true,
+        ]);
+
+        return back()->with('success', "Payment method '{$request->name}' created successfully!");
+    }
+
+    public function deletePaymentMethod(\App\Models\PaymentMethod $method)
+    {
+        $this->ensureAdminAuth();
+        $name = $method->name;
+        $method->delete();
+        return back()->with('success', "Payment method '{$name}' deleted.");
     }
 }

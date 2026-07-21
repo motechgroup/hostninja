@@ -216,6 +216,10 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Supported Payment Gateways Footer Section -->
+            <x-payment-methods-footer />
+
             <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
                 <div>© {{ date('Y') }} HostNinja Cloud. Enterprise-grade reliability.</div>
                 <div class="flex gap-6 items-center">

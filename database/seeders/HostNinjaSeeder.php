@@ -7,6 +7,7 @@ use App\Models\HostingPlan;
 use App\Models\HostingService;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
 use App\Models\Registrar;
 use App\Models\ResellerCommission;
 use App\Models\Server;
@@ -31,6 +32,7 @@ class HostNinjaSeeder extends Seeder
         Setting::setKey('stripe_key', 'pk_test_51H...hostninja', 'payment');
         Setting::setKey('smtp_host', 'smtp.hostninja.cloud', 'mail');
         Setting::setKey('smtp_port', '587', 'mail');
+        Setting::setKey('show_footer_payment_methods', '1', 'payment');
 
         // SEO & Keywords Settings
         Setting::setKey('seo_title', 'HostNinja | Lightning Fast Cloud Hosting & Domains', 'seo');
@@ -43,6 +45,121 @@ class HostNinjaSeeder extends Seeder
         Setting::setKey('template_welcome', "Hello {name},\n\nWelcome to HostNinja Cloud! Your account is now active. Access your control panel at https://hostninja.cloud/dashboard.", 'mail');
         Setting::setKey('template_invoice_created', "Hi {name},\n\nA new invoice #{invoice_number} for KES {total} has been issued. Please process payment before {due_date}.", 'mail');
         Setting::setKey('template_payment_received', "Hello {name},\n\nWe received your payment of KES {amount} (Ref: {reference}). Thank you for choosing HostNinja Cloud!", 'mail');
+
+        // Seed 14 Supported Payment Methods
+        $defaultMethods = [
+            [
+                'code' => 'visa',
+                'name' => 'Visa',
+                'category' => 'cards',
+                'sort_order' => 1,
+                'icon_svg' => '<svg class="w-auto h-7 text-white fill-current" viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#1434CB"/><path d="M13.8 17.5l2-11.5h3.2l-2 11.5h-3.2zm10.7-11.2c-.6-.2-1.6-.4-2.8-.4-3.1 0-5.3 1.6-5.3 3.9 0 1.7 1.6 2.6 2.8 3.2 1.2.6 1.6 1 1.6 1.5 0 .8-1 1.2-1.9 1.2-1.3 0-2-.2-3.1-.7l-.4-.2-.5 3c.9.4 2.5.7 4.1.7 3.3 0 5.4-1.6 5.4-4 0-1.3-.8-2.3-2.6-3.2-1.1-.5-1.8-.9-1.8-1.5 0-.5.6-1 1.9-1 1 0 1.8.2 2.4.5l.3.1.4-2.9zm6.6-.3h-2.5c-.8 0-1.4.2-1.7 1l-4.9 11h3.4s.5-1.5.7-1.9h4.2c.1.4.4 1.9.4 1.9h3l-2.6-12zm-3.6 7.4l1.7-4.6.9 4.6h-2.6zM10 6L6.8 13.9 6.5 12.3c-.6-2.1-2.4-4.4-4.5-5.5L4.7 17.5h3.4l5.1-11.5H10z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'mastercard',
+                'name' => 'Mastercard',
+                'category' => 'cards',
+                'sort_order' => 2,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#0A0E1A"/><circle cx="14" cy="12" r="7" fill="#EB001B"/><circle cx="22" cy="12" r="7" fill="#F79E1B"/><path d="M18 6.7A6.97 6.97 0 0015.5 12c0 2.1.9 4 2.5 5.3a6.97 6.97 0 002.5-5.3c0-2.1-.9-4-2.5-5.3z" fill="#FF5F00"/></svg>',
+            ],
+            [
+                'code' => 'amex',
+                'name' => 'American Express',
+                'category' => 'cards',
+                'sort_order' => 3,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#006FCF"/><path d="M7 11.5l1.5-3.5h2l.7 1.8.7-1.8h2l1.5 3.5h-1.5l-.3-.8h-1.6l-.3.8H7.3zm2.5-1.8l.5 1.3h-1l.5-1.3zm6.5 1.8V8h4.5v1.3H17.5v.8h2.7V11.4h-2.7v.8h3v1.3H16zm6 0V8h2.2l1.3 2.2L26.8 8H29v5.5h-1.5v-3.5l-1.3 2.2h-1l-1.3-2.2v3.5H22z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'paypal',
+                'name' => 'PayPal',
+                'category' => 'wallets',
+                'sort_order' => 4,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#003087"/><path d="M12.5 6h4c2.5 0 4 1.2 3.6 3.5-.5 2.8-2.6 4.5-5.1 4.5h-1.5l-1 6h-2.5l2.5-14z" fill="#0079C1"/><path d="M14.5 9h4c2.5 0 4 1.2 3.6 3.5-.5 2.8-2.6 4.5-5.1 4.5h-1.5l-1 6h-2.5l2.5-14z" fill="#00457C" opacity="0.3"/><path d="M13.5 8h4c2.5 0 4 1.2 3.6 3.5-.5 2.8-2.6 4.5-5.1 4.5h-1.5l-1 6h-2.5l2.5-14z" fill="#0079C1"/></svg>',
+            ],
+            [
+                'code' => 'stripe',
+                'name' => 'Stripe',
+                'category' => 'cards',
+                'sort_order' => 5,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#635BFF"/><path d="M16.7 10.3c0-.6.5-.9 1.4-.9 1.2 0 2.8.4 4 1.1V7.2c-1.3-.5-2.7-.7-4-.7-3.4 0-5.7 1.8-5.7 4.8 0 4.7 6.4 3.9 6.4 6 0 .8-.7 1.1-1.7 1.1-1.5 0-3.3-.6-4.7-1.4v3.4c1.5.7 3.2 1 4.7 1 3.6 0 6-1.8 6-4.9-.1-5-6.4-4.1-6.4-6.2z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'applepay',
+                'name' => 'Apple Pay',
+                'category' => 'wallets',
+                'sort_order' => 6,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#000000"/><path d="M12.5 12.3c0-1.6 1.3-2.4 1.3-2.5-.7-1.1-1.9-1.2-2.3-1.2-1-.1-2 .6-2.5.6-.5 0-1.3-.6-2.1-.6-1.1 0-2.1.6-2.6 1.6-1.2 2-0.3 5 0.8 6.7.6.8 1.2 1.7 2.1 1.7.9 0 1.2-.5 2.2-.5 1 0 1.3.5 2.2.5.9 0 1.5-.8 2.1-1.6.6-.9.9-1.9.9-2-.1 0-1.9-.7-2.1-2.2zM11.6 7.6c.5-.6.8-1.4.7-2.2-.7 0-1.5.4-2 .1-.4.5-.8 1.3-.7 2.1.8.1 1.5-.4 2-.9z" fill="#FFFFFF"/><path d="M18.5 7h2v10h-2V7zm5 0h3c1.5 0 2.5.8 2.5 2.2 0 1.4-1 2.2-2.5 2.2h-1V17h-2V7zm2 3h1c.5 0 1-.2 1-.7s-.5-.7-1-.7h-1V10z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'googlepay',
+                'name' => 'Google Pay',
+                'category' => 'wallets',
+                'sort_order' => 7,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#FFFFFF" stroke="#E2E8F0"/><path d="M13.2 12.2v2.7h-4.3V7h4.3v2.7h-1.6v-1.1H10.5v1.3h2.3v1.5h-2.3v1.5h2.7v-0.7z" fill="#5F6368"/><path d="M17.1 11.2c0 2.3-1.6 3.9-3.9 3.9s-3.9-1.6-3.9-3.9 1.6-3.9 3.9-3.9 3.9 1.6 3.9 3.9zm-1.6 0c0-1.5-.9-2.5-2.3-2.5s-2.3 1-2.3 2.5.9 2.5 2.3 2.5 2.3-1 2.3-2.5z" fill="#4285F4"/><path d="M21.5 7.3h-2.6v9.3h2.6V7.3z" fill="#34A853"/><path d="M26.2 11.2c0 2.3-1.6 3.9-3.9 3.9s-3.9-1.6-3.9-3.9 1.6-3.9 3.9-3.9 3.9 1.6 3.9 3.9zm-1.6 0c0-1.5-.9-2.5-2.3-2.5s-2.3 1-2.3 2.5.9 2.5 2.3 2.5 2.3-1 2.3-2.5z" fill="#EA4335"/></svg>',
+            ],
+            [
+                'code' => 'mpesa',
+                'name' => 'M-Pesa Express',
+                'category' => 'mobile',
+                'sort_order' => 8,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#00A651"/><path d="M8 6h3l2.5 6L16 6h3v12h-2.5v-7.5L14 16.5h-1L10.5 10.5V18H8V6zm13 8h4v4h-4v-4zm0-8h4v6h-4V6z" fill="#FFFFFF"/><path d="M26 6h2v12h-2V6z" fill="#E21A22"/></svg>',
+            ],
+            [
+                'code' => 'airtelmoney',
+                'name' => 'Airtel Money',
+                'category' => 'mobile',
+                'sort_order' => 9,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#FF0000"/><path d="M10 6h4c2.5 0 4 1.5 4 3.5 0 1.5-.8 2.5-2 3l2.5 5.5h-3l-2.2-5H12.5V18H10V6zm2.5 2.3v3h1.5c1 0 1.7-.5 1.7-1.5s-.7-1.5-1.7-1.5h-1.5z" fill="#FFFFFF"/><path d="M21 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4zm6 0c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'binancepay',
+                'name' => 'Binance Pay',
+                'category' => 'crypto',
+                'sort_order' => 10,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#181A20"/><path d="M18 6l3 3-3 3-3-3 3-3zm-6 6l3 3-3 3-3-3 3-3zm12 0l3 3-3 3-3-3 3-3zm-6 6l3 3-3 3-3-3 3-3zm0-6l2.1 2.1-2.1 2.1-2.1-2.1 2.1-2.1z" fill="#F0B90B"/></svg>',
+            ],
+            [
+                'code' => 'skrill',
+                'name' => 'Skrill',
+                'category' => 'wallets',
+                'sort_order' => 11,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#811E44"/><path d="M11 10.5c0-.8.7-1.3 1.8-1.3 1.5 0 3.2.6 4.3 1.3V7.8c-1.3-.5-2.8-.8-4.3-.8-3.5 0-5.8 1.8-5.8 4.7 0 4.5 6.2 3.8 6.2 5.8 0 .8-.8 1.3-2 1.3-1.8 0-3.8-.8-5.2-1.7v2.8c1.5.8 3.5 1.2 5.2 1.2 3.8 0 6.2-1.8 6.2-4.9 0-4.8-6.4-3.9-6.4-6.8zM24 6h-3v12h3V6zm3 0h-3v12h3V6z" fill="#FFFFFF"/></svg>',
+            ],
+            [
+                'code' => 'payoneer',
+                'name' => 'Payoneer',
+                'category' => 'wallets',
+                'sort_order' => 12,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#FF4800"/><circle cx="18" cy="12" r="6" fill="#FFFFFF"/><circle cx="18" cy="12" r="3" fill="#FF4800"/></svg>',
+            ],
+            [
+                'code' => 'wise',
+                'name' => 'Wise',
+                'category' => 'banking',
+                'sort_order' => 13,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#2E0696"/><path d="M12 7l-4 10h2.8l.8-2h4.8l.8 2H20L16 7h-4zm.4 6l1.6-4.5 1.6 4.5h-3.2z" fill="#00D4B6"/><path d="M21 7l4 6-1.5 4h3L30 7h-9z" fill="#00D4B6"/></svg>',
+            ],
+            [
+                'code' => 'banktransfer',
+                'name' => 'Bank Transfer',
+                'category' => 'banking',
+                'sort_order' => 14,
+                'icon_svg' => '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" rx="4" fill="#1E293B"/><path d="M18 6L8 11v2h20v-2L18 6zm-8 8v5h2v-5h-2zm5 0v5h2v-5h-2zm5 0v5h2v-5h-2zm-12 6v2h20v-2H8z" fill="#94A3B8"/></svg>',
+            ],
+        ];
+
+        foreach ($defaultMethods as $pm) {
+            PaymentMethod::firstOrCreate(
+                ['code' => $pm['code']],
+                [
+                    'name' => $pm['name'],
+                    'category' => $pm['category'],
+                    'sort_order' => $pm['sort_order'],
+                    'icon_svg' => $pm['icon_svg'],
+                    'is_enabled' => true,
+                ]
+            );
+        }
 
         // Seed Domain Registrars
         $resellerClub = Registrar::firstOrCreate(

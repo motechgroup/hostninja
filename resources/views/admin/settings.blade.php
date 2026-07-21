@@ -162,33 +162,99 @@
                 </div>
             </div>
 
-            <!-- TAB 3: GATEWAYS -->
-            <div x-show="tab === 'gateways'" class="space-y-6" x-cloak>
+            <!-- TAB 3: GATEWAYS & PAYMENT METHODS -->
+            <div x-show="tab === 'gateways'" class="space-y-8" x-cloak>
                 <div class="flex justify-between items-center border-b border-slate-200 pb-3">
-                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Payment Gateway Credentials</h3>
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">ONLINE</span>
+                    <div>
+                        <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Payment Gateway Credentials & Footer Payment Methods</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Control payment API parameters and dynamic footer payment badges.</p>
+                    </div>
+                    <button type="button" onclick="document.getElementById('add_pm_modal').classList.remove('hidden')" class="px-3.5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">add</span>
+                        <span>Add Payment Gateway</span>
+                    </button>
                 </div>
+
+                <!-- Global Footer Payment Badges Display Toggle -->
+                <div class="p-5 bg-slate-900 text-white rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h4 class="font-bold text-sm text-[#00F5FF]">Show Payment Methods in Website Footer</h4>
+                        <p class="text-xs text-slate-400 mt-1">When enabled, active payment logos below will automatically appear in the footer.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="hidden" name="show_footer_payment_methods" value="0">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="show_footer_payment_methods" value="1" {{ ($settings['show_footer_payment_methods'] ?? '1') === '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="space-y-4">
-                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
-                        <h4 class="font-bold text-xs text-emerald-800 mb-3">Safaricom M-Pesa Daraja STK Push API</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[11px] font-semibold text-slate-700 block mb-1">Shortcode (Paybill / Till)</label>
-                                <input type="text" name="mpesa_shortcode" value="{{ $settings['mpesa_shortcode'] ?? '174379' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                    <h4 class="font-bold text-xs uppercase tracking-widest text-slate-500 font-['JetBrains_Mono']">API Credentials</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                            <h4 class="font-bold text-xs text-emerald-800 mb-3">Safaricom M-Pesa Daraja STK Push API</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-1">Shortcode (Paybill / Till)</label>
+                                    <input type="text" name="mpesa_shortcode" value="{{ $settings['mpesa_shortcode'] ?? '174379' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] font-semibold text-slate-700 block mb-1">Passkey</label>
+                                    <input type="password" name="mpesa_passkey" value="{{ $settings['mpesa_passkey'] ?? '' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="p-4 bg-blue-50 rounded-2xl border border-blue-200">
+                            <h4 class="font-bold text-xs text-blue-800 mb-3">Stripe Credit Card Gateway</h4>
                             <div>
-                                <label class="text-[11px] font-semibold text-slate-700 block mb-1">Passkey</label>
-                                <input type="password" name="mpesa_passkey" value="{{ $settings['mpesa_passkey'] ?? '' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
+                                <label class="text-[11px] font-semibold text-slate-700 block mb-1">Stripe Publishable Key</label>
+                                <input type="text" name="stripe_key" value="{{ $settings['stripe_key'] ?? '' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="p-4 bg-blue-50 rounded-2xl border border-blue-200">
-                        <h4 class="font-bold text-xs text-blue-800 mb-3">Stripe Credit Card Gateway</h4>
-                        <div>
-                            <label class="text-[11px] font-semibold text-slate-700 block mb-1">Stripe Publishable Key</label>
-                            <input type="text" name="stripe_key" value="{{ $settings['stripe_key'] ?? '' }}" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900">
-                        </div>
+                <!-- Dynamic Payment Gateways List -->
+                <div class="space-y-4 pt-4 border-t border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-xs uppercase tracking-widest text-slate-500 font-['JetBrains_Mono']">Configured Payment Logos ({{ count($paymentMethods ?? []) }})</h4>
+                        <span class="text-[11px] text-slate-400">Click toggle button to hide or show on footer</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        @foreach($paymentMethods ?? [] as $pm)
+                            <div class="p-3 bg-white rounded-2xl border border-slate-200 flex items-center justify-between gap-3 shadow-sm hover:border-slate-300 transition-all">
+                                <div class="flex items-center gap-3 overflow-hidden">
+                                    <div class="shrink-0 p-1 bg-slate-900 rounded-xl border border-slate-800">
+                                        {!! $pm->icon_svg !!}
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="font-bold text-xs text-slate-900 truncate">{{ $pm->name }}</div>
+                                        <div class="text-[10px] text-slate-400 capitalize">{{ $pm->category }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <form method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}">
+                                        @csrf
+                                        <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}">
+                                            {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
+                                        </button>
+                                    </form>
+
+                                    <form method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-1 text-slate-400 hover:text-rose-600 transition-colors">
+                                            <span class="material-symbols-outlined text-sm">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -270,6 +336,58 @@
                     <div class="flex justify-end gap-2 pt-2">
                         <button type="button" onclick="document.getElementById('test_smtp_modal').classList.add('hidden')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl">Cancel</button>
                         <button type="submit" class="px-5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow">Dispatch Test Mail</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: ADD CUSTOM PAYMENT METHOD -->
+        <div id="add_pm_modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-lg w-full shadow-2xl space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Add New Supported Payment Gateway</h3>
+                    <button type="button" onclick="document.getElementById('add_pm_modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
+                </div>
+
+                <form method="POST" action="{{ route('admin.payment-methods.create') }}" class="space-y-4">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700 block mb-1">Gateway Name</label>
+                            <input type="text" name="name" placeholder="e.g. Klarna, Google Pay" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900">
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700 block mb-1">Unique Code Slug</label>
+                            <input type="text" name="code" placeholder="e.g. klarna" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-900">
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700 block mb-1">Category</label>
+                            <select name="category" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900">
+                                <option value="cards">Credit & Debit Cards</option>
+                                <option value="wallets">E-Wallets & Buy-Now-Pay-Later</option>
+                                <option value="mobile">Mobile Money</option>
+                                <option value="crypto">Cryptocurrency</option>
+                                <option value="banking">Bank Transfer</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700 block mb-1">Sort Order Position</label>
+                            <input type="number" name="sort_order" value="15" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700 block mb-1">SVG Logo Markup (Vector Icon Code)</label>
+                        <textarea name="icon_svg" rows="4" placeholder='<svg class="w-auto h-7" viewBox="0 0 36 24">...</svg>' required class="w-full p-3 bg-slate-900 text-white rounded-xl text-xs font-mono"></textarea>
+                        <p class="text-[10px] text-slate-400 mt-1">Paste SVG markup containing width/height classes (recommended `w-auto h-7`).</p>
+                    </div>
+
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="document.getElementById('add_pm_modal').classList.add('hidden')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl">Cancel</button>
+                        <button type="submit" class="px-5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow">Save & Add Gateway</button>
                     </div>
                 </form>
             </div>
