@@ -1,6 +1,14 @@
 @php
     $showFooter = \App\Models\Setting::getByKey('show_footer_payment_methods', '1') === '1';
-    $paymentMethods = $showFooter ? \App\Models\PaymentMethod::getEnabled() : collect();
+    $paymentMethods = collect();
+    
+    if ($showFooter && \Illuminate\Support\Facades\Schema::hasTable('payment_methods')) {
+        try {
+            $paymentMethods = \App\Models\PaymentMethod::getEnabled();
+        } catch (\Throwable $e) {
+            $paymentMethods = collect();
+        }
+    }
 @endphp
 
 @if($showFooter && $paymentMethods->count() > 0)
