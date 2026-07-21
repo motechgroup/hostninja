@@ -245,6 +245,14 @@ class AdminController extends Controller
         return back()->with('success', "Payment method {$method->name} has been {$status}.");
     }
 
+    public function toggleFooterPaymentMethod(\App\Models\PaymentMethod $method)
+    {
+        $this->ensureAdminAuth();
+        $method->update(['show_in_footer' => !$method->show_in_footer]);
+        $status = $method->show_in_footer ? 'shown in footer' : 'hidden from footer';
+        return back()->with('success', "Payment logo for {$method->name} is now {$status}.");
+    }
+
     public function createPaymentMethod(Request $request)
     {
         $this->ensureAdminAuth();
@@ -263,6 +271,7 @@ class AdminController extends Controller
             'icon_svg' => $request->icon_svg,
             'sort_order' => $request->sort_order ?? 99,
             'is_enabled' => true,
+            'show_in_footer' => true,
         ]);
 
         return back()->with('success', "Payment method '{$request->name}' created successfully!");
@@ -283,6 +292,7 @@ class AdminController extends Controller
             'category' => $request->category,
             'sort_order' => $request->sort_order,
             'icon_svg' => $request->icon_svg,
+            'show_in_footer' => $request->has('show_in_footer') ? (bool) $request->show_in_footer : $method->show_in_footer,
         ]);
 
         return back()->with('success', "Payment method '{$method->name}' updated!");

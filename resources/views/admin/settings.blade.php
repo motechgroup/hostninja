@@ -244,12 +244,13 @@
                                 </div>
 
                                 <div class="flex items-center gap-1.5 shrink-0">
-                                    <button type="submit" form="toggle_pm_{{ $pm->id }}" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}">
-                                        {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
+                                    <button type="submit" form="toggle_footer_pm_{{ $pm->id }}" class="px-2 py-1 rounded-lg text-[10px] font-bold transition-colors flex items-center gap-1 {{ $pm->show_in_footer ? 'bg-blue-50 text-[#0059bb] hover:bg-blue-100' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}" title="Toggle Footer Visibility">
+                                        <span class="material-symbols-outlined text-[12px]">{{ $pm->show_in_footer ? 'visibility' : 'visibility_off' }}</span>
+                                        <span>{{ $pm->show_in_footer ? 'Footer: Shown' : 'Footer: Hidden' }}</span>
                                     </button>
 
-                                    <button type="submit" form="delete_pm_{{ $pm->id }}" class="p-1 text-slate-400 hover:text-rose-600 transition-colors">
-                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    <button type="submit" form="toggle_pm_{{ $pm->id }}" class="px-2 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}" title="Toggle Active Status">
+                                        {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
                                     </button>
                                 </div>
                             </div>
@@ -291,6 +292,9 @@
         <!-- Hidden Forms for Payment Method Toggles and Deletions -->
         @foreach($paymentMethods ?? [] as $pm)
             <form id="toggle_pm_{{ $pm->id }}" method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}" class="hidden">
+                @csrf
+            </form>
+            <form id="toggle_footer_pm_{{ $pm->id }}" method="POST" action="{{ route('admin.payment-methods.toggle-footer', $pm->id) }}" class="hidden">
                 @csrf
             </form>
             <form id="delete_pm_{{ $pm->id }}" method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')" class="hidden">

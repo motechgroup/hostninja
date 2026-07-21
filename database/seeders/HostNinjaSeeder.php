@@ -157,6 +157,7 @@ class HostNinjaSeeder extends Seeder
                     'sort_order' => $pm['sort_order'],
                     'icon_svg' => $pm['icon_svg'],
                     'is_enabled' => true,
+                    'show_in_footer' => true,
                 ]
             );
         }

@@ -76,6 +76,7 @@ Route::post('/admin/invoices/{invoice}/resend-email', [AdminController::class, '
 Route::post('/admin/services/{service}/send-cpanel-credentials', [AdminController::class, 'sendCpanelCredentialsEmail'])->name('admin.services.cpanel-credentials');
 Route::get('/admin/payment-gateways', [AdminController::class, 'paymentGateways'])->name('admin.payment-gateways');
 Route::post('/admin/payment-methods/{method}/toggle', [AdminController::class, 'togglePaymentMethod'])->name('admin.payment-methods.toggle');
+Route::post('/admin/payment-methods/{method}/toggle-footer', [AdminController::class, 'toggleFooterPaymentMethod'])->name('admin.payment-methods.toggle-footer');
 Route::post('/admin/payment-methods/{method}/update', [AdminController::class, 'updatePaymentMethod'])->name('admin.payment-methods.update');
 Route::post('/admin/payment-methods', [AdminController::class, 'createPaymentMethod'])->name('admin.payment-methods.create');
 Route::delete('/admin/payment-methods/{method}', [AdminController::class, 'deletePaymentMethod'])->name('admin.payment-methods.delete');

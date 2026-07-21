@@ -132,6 +132,34 @@ class PaymentMethodsFooterTest extends TestCase
         $this->assertEquals(5, $pm->fresh()->sort_order);
     }
 
+    public function test_admin_can_toggle_footer_visibility_independently()
+    {
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'role' => 'admin',
+            'password' => bcrypt('password'),
+        ]);
+
+        $pm = PaymentMethod::create([
+            'name' => 'Visa Card',
+            'code' => 'visa',
+            'category' => 'cards',
+            'icon_svg' => '<svg viewBox="0 0 36 24"></svg>',
+            'is_enabled' => true,
+            'show_in_footer' => true,
+            'sort_order' => 1,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('admin.payment-methods.toggle-footer', $pm->id));
+        $response->assertRedirect();
+        $this->assertFalse($pm->fresh()->show_in_footer);
+        $this->assertTrue($pm->fresh()->is_enabled); // Payment method active, but hidden from footer
+
+        $enabledForFooter = PaymentMethod::getEnabledForFooter();
+        $this->assertCount(0, $enabledForFooter);
+    }
+
     public function test_footer_displays_enabled_payment_methods()
     {
         Setting::setKey('show_footer_payment_methods', '1', 'payment');
@@ -142,6 +170,7 @@ class PaymentMethodsFooterTest extends TestCase
             'category' => 'mobile',
             'icon_svg' => '<svg viewBox="0 0 36 24"><text>MPESA_LOGO</text></svg>',
             'is_enabled' => true,
+            'show_in_footer' => true,
             'sort_order' => 1,
         ]);
 

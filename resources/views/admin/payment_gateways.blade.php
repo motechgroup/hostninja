@@ -181,27 +181,42 @@
                             <div class="text-[10px] text-slate-400 capitalize font-mono">{{ $pm->code }} &bull; {{ $pm->category }}</div>
                         </div>
 
-                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-                            <!-- Toggle Active/Disabled -->
-                            <form method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}">
-                                @csrf
-                                <button type="submit" class="px-3 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}">
-                                    {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
-                                </button>
-                            </form>
+                        <div class="space-y-2 pt-2 border-t border-slate-100">
+                            <div class="flex items-center justify-between gap-1">
+                                <!-- Footer Visibility Toggle -->
+                                <form method="POST" action="{{ route('admin.payment-methods.toggle-footer', $pm->id) }}">
+                                    @csrf
+                                    <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors flex items-center gap-1 {{ $pm->show_in_footer ? 'bg-blue-50 text-[#0059bb] hover:bg-blue-100' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}" title="Toggle Footer Visibility">
+                                        <span class="material-symbols-outlined text-[12px]">{{ $pm->show_in_footer ? 'visibility' : 'visibility_off' }}</span>
+                                        <span>{{ $pm->show_in_footer ? 'Footer: Visible' : 'Footer: Hidden' }}</span>
+                                    </button>
+                                </form>
 
-                            <div class="flex items-center gap-1">
+                                <!-- Active Status Toggle -->
+                                <form method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}">
+                                    @csrf
+                                    <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}" title="Toggle System Active Status">
+                                        {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-50">
                                 <!-- Edit Button -->
-                                <button type="button" @click="editMethod = { id: '{{ $pm->id }}', name: '{{ addslashes($pm->name) }}', category: '{{ $pm->category }}', sort_order: {{ $pm->sort_order }}, icon_svg: '{{ addslashes($pm->icon_svg) }}' }; showEditModal = true" class="p-1 text-slate-400 hover:text-[#0059bb] transition-colors" title="Edit Gateway">
-                                    <span class="material-symbols-outlined text-sm">edit</span>
+                                <button type="button" @click="editMethod = { id: '{{ $pm->id }}', name: '{{ addslashes($pm->name) }}', category: '{{ $pm->category }}', sort_order: {{ $pm->sort_order }}, show_in_footer: {{ $pm->show_in_footer ? 'true' : 'false' }}, icon_svg: '{{ addslashes($pm->icon_svg) }}' }; showEditModal = true" class="text-[11px] text-slate-500 hover:text-[#0059bb] font-semibold flex items-center gap-0.5">
+                                    <span class="material-symbols-outlined text-xs">edit</span>
+                                    <span>Edit</span>
                                 </button>
+
+                                <span class="text-slate-300">&bull;</span>
 
                                 <!-- Delete Button -->
                                 <form method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="p-1 text-slate-400 hover:text-rose-600 transition-colors" title="Delete Gateway">
-                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    <button type="submit" class="text-[11px] text-slate-400 hover:text-rose-600 font-semibold flex items-center gap-0.5" title="Delete Gateway">
+                                        <span class="material-symbols-outlined text-xs">delete</span>
+                                        <span>Delete</span>
                                     </button>
                                 </form>
                             </div>

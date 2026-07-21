@@ -4,7 +4,7 @@
     
     if ($showFooter && \Illuminate\Support\Facades\Schema::hasTable('payment_methods')) {
         try {
-            $paymentMethods = \App\Models\PaymentMethod::getEnabled();
+            $paymentMethods = \App\Models\PaymentMethod::getEnabledForFooter();
         } catch (\Throwable $e) {
             $paymentMethods = collect();
         }
