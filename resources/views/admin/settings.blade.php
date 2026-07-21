@@ -164,15 +164,21 @@
 
             <!-- TAB 3: GATEWAYS & PAYMENT METHODS -->
             <div x-show="tab === 'gateways'" class="space-y-8" x-cloak>
-                <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
                     <div>
                         <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Payment Gateway Credentials & Footer Payment Methods</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Control payment API parameters and dynamic footer payment badges.</p>
                     </div>
-                    <button type="button" onclick="document.getElementById('add_pm_modal').classList.remove('hidden')" class="px-3.5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-sm">add</span>
-                        <span>Add Payment Gateway</span>
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('admin.payment-gateways') }}" class="px-3.5 py-2 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">payments</span>
+                            <span>Full Payment Gateways Console</span>
+                        </a>
+                        <button type="button" onclick="document.getElementById('add_pm_modal').classList.remove('hidden')" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">add</span>
+                            <span>Add Gateway</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Global Footer Payment Badges Display Toggle -->
@@ -221,7 +227,7 @@
                 <div class="space-y-4 pt-4 border-t border-slate-200">
                     <div class="flex items-center justify-between">
                         <h4 class="font-bold text-xs uppercase tracking-widest text-slate-500 font-['JetBrains_Mono']">Configured Payment Logos ({{ count($paymentMethods ?? []) }})</h4>
-                        <span class="text-[11px] text-slate-400">Click toggle button to hide or show on footer</span>
+                        <a href="{{ route('admin.payment-gateways') }}" class="text-[11px] font-bold text-[#0059bb] hover:underline">Manage in Payment Gateways Console &rarr;</a>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -238,20 +244,13 @@
                                 </div>
 
                                 <div class="flex items-center gap-1.5 shrink-0">
-                                    <form method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}">
-                                        @csrf
-                                        <button type="submit" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}">
-                                            {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
-                                        </button>
-                                    </form>
+                                    <button type="submit" form="toggle_pm_{{ $pm->id }}" class="px-2.5 py-1 rounded-lg text-[10px] font-bold transition-colors {{ $pm->is_enabled ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' }}">
+                                        {{ $pm->is_enabled ? 'Active' : 'Disabled' }}
+                                    </button>
 
-                                    <form method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-1 text-slate-400 hover:text-rose-600 transition-colors">
-                                            <span class="material-symbols-outlined text-sm">delete</span>
-                                        </button>
-                                    </form>
+                                    <button type="submit" form="delete_pm_{{ $pm->id }}" class="p-1 text-slate-400 hover:text-rose-600 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">delete</span>
+                                    </button>
                                 </div>
                             </div>
                         @endforeach
@@ -288,6 +287,17 @@
                 </button>
             </div>
         </form>
+
+        <!-- Hidden Forms for Payment Method Toggles and Deletions -->
+        @foreach($paymentMethods ?? [] as $pm)
+            <form id="toggle_pm_{{ $pm->id }}" method="POST" action="{{ route('admin.payment-methods.toggle', $pm->id) }}" class="hidden">
+                @csrf
+            </form>
+            <form id="delete_pm_{{ $pm->id }}" method="POST" action="{{ route('admin.payment-methods.delete', $pm->id) }}" onsubmit="return confirm('Delete payment method {{ $pm->name }}?')" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endforeach
 
         <!-- MODAL: EMAIL TEMPLATE PREVIEWER -->
         <div x-show="showMailPreview" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak>
