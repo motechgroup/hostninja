@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HostNinja | Authentication Portal</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#000000",
+                    "outline-variant": "#c5c6cd",
+                    "secondary": "#0059bb",
+                    "on-tertiary-container": "#009299",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-fixed-variant": "#004493",
+                    "error": "#ba1a1a",
+                    "surface-dark": "#0A192F",
+                    "on-tertiary-fixed": "#002021",
+                    "on-surface-variant": "#44474d",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b9c7e4",
+                    "on-primary-container": "#76849f",
+                    "primary-container": "#0d1c32",
+                    "success-emerald": "#10B981",
+                    "on-primary-fixed-variant": "#39475f",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "surface-container-highest": "#e0e3e5",
+                    "secondary-container": "#0070ea",
+                    "secondary-fixed-dim": "#adc7ff",
+                    "tertiary": "#000000",
+                    "surface-dim": "#d8dadc",
+                    "tertiary-container": "#002021",
+                    "on-surface": "#191c1e",
+                    "accent-neon": "#00F5FF",
+                    "background": "#f7f9fb",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#001a41",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "surface-bright": "#f7f9fb",
+                    "surface": "#f7f9fb",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-fixed-variant": "#004f53",
+                    "secondary-fixed": "#d8e2ff",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "gradient-start": "#007BFF",
+                    "on-primary-fixed": "#0d1c32",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#63f7ff",
+                    "surface-tint": "#515f78",
+                    "tertiary-fixed-dim": "#00dce5",
+                    "outline": "#75777e",
+                    "gradient-end": "#00D4FF",
+                    "on-secondary-container": "#fefcff",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-container-high": "#e6e8ea"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "margin-tablet": "32px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "button-text": ["Inter"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .auth-tab-active {
+            border-bottom: 2px solid #0059bb;
+            color: #000000;
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        /* Tab transitions */
+        .auth-content {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .hidden-tab {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden">
+<main class="flex min-h-screen">
+<!-- Left Side: Visual/Branding (Desktop Only) -->
+<section class="hidden lg:flex lg:w-1/2 relative bg-surface-dark overflow-hidden items-center justify-center">
+<!-- Animated Shader Background -->
+
+<div class="relative z-10 w-full max-w-xl px-margin-desktop space-y-8">
+<!-- Branding -->
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-white text-[32px]">cloud_queue</span>
+</div>
+<span class="font-headline-md text-headline-md text-white tracking-tight">HostNinja</span>
+</div>
+<div class="space-y-4">
+<h1 class="font-headline-lg text-headline-lg text-white leading-tight">
+                        Powering the next generation of <span class="text-accent-neon">cloud infrastructure.</span>
+</h1>
+<p class="text-on-primary-container text-body-lg max-w-md">
+                        Deploy enterprise-grade environments in seconds. Secure, scalable, and built for modern developers.
+                    </p>
+</div>
+<!-- Feature Pills -->
+<div class="flex flex-wrap gap-3 pt-4">
+<div class="px-4 py-2 glass-panel rounded-full flex items-center gap-2 bg-white/10 border-white/10">
+<span class="w-2 h-2 rounded-full bg-success-emerald animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-white">99.9% Uptime</span>
+</div>
+<div class="px-4 py-2 glass-panel rounded-full flex items-center gap-2 bg-white/10 border-white/10">
+<span class="material-symbols-outlined text-accent-neon text-sm">bolt</span>
+<span class="font-label-caps text-label-caps text-white">NVMe Storage</span>
+</div>
+</div>
+<!-- High Tech Illustration -->
+<div class="relative mt-12 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+<div class="absolute inset-0 shimmer-bg opacity-10 pointer-events-none"></div>
+<img class="w-full aspect-video object-cover" data-alt="A highly detailed 3D render of a futuristic cloud server rack illuminated by neon cyan and electric blue light strips. The environment is a clean, high-tech data center with glass reflections and volumetric lighting. The style is professional and minimalist, conveying enterprise-grade reliability and advanced technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZVHUnZ8k_R_rUzXO-MWr9bwmoL-LJmWYHv5zcLpqAqTPDftXGEO2hocRX73AkG07fTK2qC9VFscg4LsBghFShEHMr7HUtCRaqPbVH8yTtROnawQFyUrrticCT0gD0vbIkMuiGPyNlNgKvV6ZRQhgRO8kuyrOO9yPqRsT8UxHUhjgRNdQJ3YUVx0NrXkPbHc_PCTnbp3YhKLyoy6zTQ0Us6-wZwR18p_B8b_TIQeMu_tJiMxB-5D9k"/>
+</div>
+</div>
+<!-- Bottom Accent -->
+<div class="absolute bottom-12 left-margin-desktop flex items-center gap-6 text-white/40 font-label-caps text-label-caps">
+<span>© 2024 HOSTNINJA</span>
+<span class="w-1 h-1 rounded-full bg-white/20"></span>
+<span>SECURED BY NINJAGUARD</span>
+</div>
+</section>
+<!-- Right Side: Auth Forms -->
+<section class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24 bg-surface-container-lowest">
+<div class="w-full max-w-[440px] space-y-10">
+<!-- Mobile Branding (Hidden on Desktop) -->
+<div class="lg:hidden flex flex-col items-center gap-2 mb-8">
+<div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">cloud_queue</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">HostNinja</span>
+</div>
+<!-- Header -->
+<div class="space-y-2">
+<h2 class="font-headline-md text-headline-md text-on-surface" id="form-title">Welcome Back</h2>
+<p class="text-on-surface-variant text-body-md" id="form-subtitle">Enter your credentials to access your dashboard.</p>
+</div>
+<!-- Tab Switcher -->
+<div class="flex border-b border-outline-variant/30">
+<button class="flex-1 py-4 font-button-text text-button-text transition-all auth-tab-active" id="tab-login" onclick="switchTab('login')">
+                        Log In
+                    </button>
+<button class="flex-1 py-4 font-button-text text-button-text transition-all text-on-surface-variant hover:text-primary" id="tab-signup" onclick="switchTab('signup')">
+                        Sign Up
+                    </button>
+</div>
+<!-- Forms Container -->
+<div class="relative min-h-[400px]">
+<!-- Login Form -->
+<form class="auth-content space-y-6" id="form-login">
+<div class="space-y-4">
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant px-1">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Password</label>
+<a class="text-secondary font-label-caps text-[10px] hover:underline uppercase" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-white rounded-xl font-button-text text-button-text flex items-center justify-center gap-2 hover:bg-secondary active:scale-[0.98] transition-all group" type="submit">
+                            Sign In to Portal
+                            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
+<div class="relative flex justify-center text-label-caps font-label-caps"><span class="bg-surface-container-lowest px-4 text-on-surface-variant">Or continue with</span></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 py-3 border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors" type="button">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvpljPs5xeJLXltyXzW9frPoRtUO6DPB70o1jj_fSLdJvCeTFNPKKPukbc5ZJTJ7v3jplrhlgiOWg9XAwvyaviaWu92P_EWojtu3SX50mTEcwib-D-Q13cyk1KYl4r6xVKLvWJYs8PkDtaeo-vhUt7ti_XHL73oSaccHWuvMf5dgrygR3y2o-tw8dVwc_7xVnTde_MZ-vftY7EkZdCF0_grJ0tRwD0GBx4WGrbvr1ej0fYX8HOLtkf"/>
+<span class="font-button-text text-sm">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 py-3 border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors" type="button">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+<span class="font-button-text text-sm">GitHub</span>
+</button>
+</div>
+</form>
+<!-- Signup Form -->
+<form class="auth-content hidden-tab space-y-6" id="form-signup">
+<div class="space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant px-1">First Name</label>
+<input class="w-full px-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="Jane" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant px-1">Last Name</label>
+<input class="w-full px-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="Doe" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant px-1">Email Address</label>
+<input class="w-full px-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="jane@company.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant px-1">Choose Password</label>
+<input class="w-full px-4 py-4 bg-surface-container-low border-transparent rounded-xl focus:ring-2 focus:ring-secondary focus:bg-white transition-all text-body-md outline-none" placeholder="Min. 12 characters" type="password"/>
+</div>
+</div>
+<div class="flex items-start gap-3 px-1">
+<input class="mt-1 w-4 h-4 text-secondary rounded border-outline-variant focus:ring-secondary" id="terms" type="checkbox"/>
+<label class="text-body-md text-on-surface-variant text-sm" for="terms">
+                                I agree to the <a class="text-secondary hover:underline" href="#">Terms of Service</a> and <a class="text-secondary hover:underline" href="#">Privacy Policy</a>.
+                            </label>
+</div>
+<button class="w-full py-4 bg-primary text-white rounded-xl font-button-text text-button-text hover:bg-secondary active:scale-[0.98] transition-all" type="submit">
+                            Create Free Account
+                        </button>
+</form>
+</div>
+<!-- Footer Text -->
+<p class="text-center text-on-surface-variant text-sm pt-4">
+                    Facing issues? <a class="text-secondary hover:underline font-semibold" href="#">Contact Support</a>
+</p>
+</div>
+</section>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        function switchTab(mode) {
+            const loginForm = document.getElementById('form-login');
+            const signupForm = document.getElementById('form-signup');
+            const tabLogin = document.getElementById('tab-login');
+            const tabSignup = document.getElementById('tab-signup');
+            const title = document.getElementById('form-title');
+            const subtitle = document.getElementById('form-subtitle');
+
+            if (mode === 'signup') {
+                loginForm.classList.add('hidden-tab');
+                setTimeout(() => {
+                    loginForm.style.display = 'none';
+                    signupForm.style.display = 'block';
+                    setTimeout(() => signupForm.classList.remove('hidden-tab'), 50);
+                }, 300);
+
+                tabSignup.classList.add('auth-tab-active');
+                tabSignup.classList.remove('text-on-surface-variant');
+                tabLogin.classList.remove('auth-tab-active');
+                tabLogin.classList.add('text-on-surface-variant');
+
+                title.innerText = 'Start Your Journey';
+                subtitle.innerText = 'Create your account and start deploying in under 60 seconds.';
+            } else {
+                signupForm.classList.add('hidden-tab');
+                setTimeout(() => {
+                    signupForm.style.display = 'none';
+                    loginForm.style.display = 'block';
+                    setTimeout(() => loginForm.classList.remove('hidden-tab'), 50);
+                }, 300);
+
+                tabLogin.classList.add('auth-tab-active');
+                tabLogin.classList.remove('text-on-surface-variant');
+                tabSignup.classList.remove('auth-tab-active');
+                tabSignup.classList.add('text-on-surface-variant');
+
+                title.innerText = 'Welcome Back';
+                subtitle.innerText = 'Enter your credentials to access your dashboard.';
+            }
+        }
+
+        // Initialize state
+        window.onload = () => {
+            document.getElementById('form-signup').style.display = 'none';
+        }
+    </script>
+</body></html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Domain Search Results - HostNinja</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#000000",
+                    "outline-variant": "#c5c6cd",
+                    "secondary": "#0059bb",
+                    "on-tertiary-container": "#009299",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-fixed-variant": "#004493",
+                    "error": "#ba1a1a",
+                    "surface-dark": "#0A192F",
+                    "on-tertiary-fixed": "#002021",
+                    "on-surface-variant": "#44474d",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b9c7e4",
+                    "on-primary-container": "#76849f",
+                    "primary-container": "#0d1c32",
+                    "success-emerald": "#10B981",
+                    "on-primary-fixed-variant": "#39475f",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "surface-container-highest": "#e0e3e5",
+                    "secondary-container": "#0070ea",
+                    "secondary-fixed-dim": "#adc7ff",
+                    "tertiary": "#000000",
+                    "surface-dim": "#d8dadc",
+                    "tertiary-container": "#002021",
+                    "on-surface": "#191c1e",
+                    "accent-neon": "#00F5FF",
+                    "background": "#f7f9fb",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#001a41",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "surface-bright": "#f7f9fb",
+                    "surface": "#f7f9fb",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-fixed-variant": "#004f53",
+                    "secondary-fixed": "#d8e2ff",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "gradient-start": "#007BFF",
+                    "on-primary-fixed": "#0d1c32",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#63f7ff",
+                    "surface-tint": "#515f78",
+                    "tertiary-fixed-dim": "#00dce5",
+                    "outline": "#75777e",
+                    "gradient-end": "#00D4FF",
+                    "on-secondary-container": "#fefcff",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-container-high": "#e6e8ea"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "margin-tablet": "32px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "button-text": ["Inter"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .search-glow:focus-within {
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.15);
+        }
+        .neon-border-top {
+            border-top: 3px solid #00F5FF;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-accent-neon/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-surface-container-lowest">
+                HostNinja
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body-md text-body-md transition-all duration-300 ease-in-out" href="#">Domains</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md transition-all duration-300 ease-in-out" href="#">Products</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md transition-all duration-300 ease-in-out" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md transition-all duration-300 ease-in-out" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary font-button-text text-button-text px-4 py-2 transition-all">Log In</button>
+<button class="bg-primary text-on-primary font-button-text text-button-text px-6 py-2.5 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/10">Sign Up</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Flagship Search Bar Section -->
+<section class="mb-16">
+<div class="max-w-4xl mx-auto">
+<div class="relative group search-glow transition-all duration-500">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-3xl">language</span>
+</div>
+<input class="w-full h-20 pl-16 pr-44 rounded-full border border-outline-variant/30 glass-panel font-headline-md text-headline-md focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" placeholder="Find your new domain..." type="text" value="hostninja.com"/>
+<button class="absolute right-3 top-3 bottom-3 px-10 rounded-full bg-primary text-on-primary font-headline-md text-body-lg hover:bg-secondary transition-colors duration-300 flex items-center gap-2">
+<span>Search</span>
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+<div class="mt-6 flex flex-wrap gap-4 justify-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-60">POPULAR:</span>
+<span class="font-label-caps text-label-caps text-secondary">.COM $9.99</span>
+<span class="font-label-caps text-label-caps text-secondary">.IO $32.00</span>
+<span class="font-label-caps text-label-caps text-secondary">.TECH $4.99</span>
+<span class="font-label-caps text-label-caps text-secondary">.AFRICA $12.50</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Filter Sidebar -->
+<aside class="lg:col-span-3 space-y-8">
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-headline-md text-body-lg mb-6 flex items-center justify-between">
+                        Filters
+                        <span class="material-symbols-outlined text-outline">tune</span>
+</h3>
+<div class="space-y-6">
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4">EXTENSIONS</h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+<span class="text-body-md group-hover:text-secondary transition-colors">Popular (.com, .net)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+<span class="text-body-md group-hover:text-secondary transition-colors">Tech (.io, .ai, .dev)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+<span class="text-body-md group-hover:text-secondary transition-colors">Regional (.co.ke, .africa)</span>
+</label>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/10">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4">PRICE RANGE</h4>
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" type="range"/>
+<div class="flex justify-between mt-2 text-label-caps font-label-caps opacity-60">
+<span>$0</span>
+<span>$100+</span>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/10">
+<img class="w-full h-48 object-cover rounded-lg mb-4" data-alt="A clean, professional advertisement graphic for cloud hosting services, featuring a 3D isometric server rack with glowing neon cyan pulses. The background is a soft light-mode gradient of grays and whites. The design is minimalist with plenty of white space and a focus on premium technology and speed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-NdnXVpJy0M2dYvpTsoYXp3XjmvAH6MEJpxcONMo4X85qBTutUM7N-_Se9k3HKedF3A_oaOlR1cmVd9tRygrP7Tspnqo74KgQzM9wcSXZpGcT44F2lhV1bb9G7DMameNjTDltay7RL8uHz4CTuhhh8laAKBRu3JpOXbL2QUe9E6a3ELPl1Vwkt6IDOgfzbgj2GUn03E0kKgX4S4LB4JNo8h2of_ogGNDaCWoqJ4pB6B9Fm_HXuMlU"/>
+<div class="text-center">
+<p class="font-body-md text-sm text-on-surface-variant italic">Bundle with hosting and save 20% on your domain!</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Results Content -->
+<div class="lg:col-span-9 space-y-gutter">
+<!-- Main Result (Exact Match) -->
+<div class="glass-panel p-8 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-success-emerald/10 text-success-emerald px-4 py-1 rounded-full font-label-caps text-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            AVAILABLE
+                        </span>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">hostninja.com</h2>
+<p class="text-on-surface-variant text-body-md">Secure the foundation of your digital empire today.</p>
+</div>
+<div class="flex items-center gap-8">
+<div class="text-right">
+<span class="block text-label-caps font-label-caps text-on-surface-variant line-through opacity-50">$15.99</span>
+<span class="block font-headline-md text-headline-md text-secondary">$9.99<span class="text-body-md font-normal text-on-surface-variant">/yr</span></span>
+</div>
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-xl font-button-text text-button-text hover:bg-secondary-container transition-all shadow-lg shadow-secondary/20 flex items-center gap-2 group-hover:scale-105 active:scale-95">
+                                Add to Cart
+                                <span class="material-symbols-outlined">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Featured Extensions Bento Grid -->
+<h3 class="font-headline-md text-body-lg pt-4">Featured Extensions</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- .IO -->
+<div class="glass-panel p-6 rounded-2xl neon-border-top hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline-md text-headline-md">.io</span>
+<span class="font-label-caps text-label-caps bg-primary/5 px-2 py-1 rounded">TECH FAV</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">hostninja.io</p>
+<p class="font-headline-md text-body-lg text-secondary">$32.00/yr</p>
+</div>
+<button class="p-3 rounded-full border border-outline-variant hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- .CO.KE -->
+<div class="glass-panel p-6 rounded-2xl border-t-2 border-secondary/20 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline-md text-headline-md">.co.ke</span>
+<span class="font-label-caps text-label-caps bg-secondary/5 text-secondary px-2 py-1 rounded">REGIONAL</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">hostninja.co.ke</p>
+<p class="font-headline-md text-body-lg text-secondary">$18.50/yr</p>
+</div>
+<button class="p-3 rounded-full border border-outline-variant hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- .AFRICA -->
+<div class="glass-panel p-6 rounded-2xl border-t-2 border-primary/10 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline-md text-headline-md">.africa</span>
+<span class="font-label-caps text-label-caps bg-primary/5 px-2 py-1 rounded">EMERGING</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">hostninja.africa</p>
+<p class="font-headline-md text-body-lg text-secondary">$12.50/yr</p>
+</div>
+<button class="p-3 rounded-full border border-outline-variant hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- .ORG -->
+<div class="glass-panel p-6 rounded-2xl border-t-2 border-primary/10 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline-md text-headline-md">.org</span>
+<span class="font-label-caps text-label-caps bg-primary/5 px-2 py-1 rounded">TRUSTED</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant">hostninja.org</p>
+<p class="font-headline-md text-body-lg text-secondary">$14.99/yr</p>
+</div>
+<button class="p-3 rounded-full border border-outline-variant hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Suggestions Section -->
+<div class="mt-12">
+<h3 class="font-headline-md text-body-lg mb-6">You might also like</h3>
+<div class="space-y-2">
+<!-- Suggestion Item -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low/50 hover:bg-surface-container rounded-xl transition-all group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary opacity-40 group-hover:opacity-100 transition-opacity">auto_awesome</span>
+<div>
+<p class="font-body-md text-lg">gethostninja.com</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant opacity-60">High relevance match</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-body-lg">$11.99</span>
+<button class="text-secondary font-button-text text-button-text flex items-center gap-1 hover:underline">
+                                    Add
+                                    <span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+<!-- Suggestion Item -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low/50 hover:bg-surface-container rounded-xl transition-all group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary opacity-40 group-hover:opacity-100 transition-opacity">auto_awesome</span>
+<div>
+<p class="font-body-md text-lg">hostninja.net</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant opacity-60">Classic alternative</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-body-lg">$12.99</span>
+<button class="text-secondary font-button-text text-button-text flex items-center gap-1 hover:underline">
+                                    Add
+                                    <span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+<!-- Suggestion Item -->
+<div class="flex items-center justify-between p-6 bg-surface-container-low/50 hover:bg-surface-container rounded-xl transition-all group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary opacity-40 group-hover:opacity-100 transition-opacity">auto_awesome</span>
+<div>
+<p class="font-body-md text-lg">host-ninja.cloud</p>
+<p class="text-label-caps font-label-caps text-on-surface-variant opacity-60">Modern &amp; descriptive</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-body-lg">$8.50</span>
+<button class="text-secondary font-button-text text-button-text flex items-center gap-1 hover:underline">
+                                    Add
+                                    <span class="material-symbols-outlined text-base">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-16 bg-surface-container-lowest dark:bg-surface-dark border-t border-outline-variant/20">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-2">
+<div class="font-headline-md text-headline-md text-primary mb-6">HostNinja</div>
+<p class="text-on-surface-variant text-body-md max-w-xs mb-8">© 2024 HostNinja Cloud. Enterprise-grade reliability for the next generation of digital infrastructure.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined p-2 rounded-full border border-outline-variant/30 hover:bg-surface-container cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined p-2 rounded-full border border-outline-variant/30 hover:bg-surface-container cursor-pointer transition-colors">terminal</span>
+<span class="material-symbols-outlined p-2 rounded-full border border-outline-variant/30 hover:bg-surface-container cursor-pointer transition-colors">shield_with_heart</span>
+</div>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-primary mb-6">RESOURCES</h4>
+<div class="space-y-4">
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Documentation</a>
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">API</a>
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Status</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-primary mb-6">COMPANY</h4>
+<div class="space-y-4">
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Terms</a>
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Privacy</a>
+<a class="block text-on-surface-variant hover:text-secondary transition-all opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Contact</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactive script for some micro-interactions -->
+<script>
+        // Simple search input focus handling
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.02]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+
+        // Toggle add to cart state
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Add')) {
+                btn.onclick = () => {
+                    const originalText = btn.innerHTML;
+                    if (!btn.classList.contains('bg-success-emerald')) {
+                        btn.innerHTML = `<span class="material-symbols-outlined">done</span> Added`;
+                        btn.classList.add('bg-success-emerald', 'text-white');
+                        btn.classList.remove('bg-secondary', 'bg-primary');
+                    } else {
+                        btn.innerHTML = originalText.replace('Added', 'Add to Cart');
+                        btn.classList.remove('bg-success-emerald', 'text-white');
+                        btn.classList.add('bg-secondary');
+                    }
+                };
+            }
+        });
+    </script>
+</body></html>

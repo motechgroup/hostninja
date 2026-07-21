@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing Plans | HostNinja</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#000000",
+                    "outline-variant": "#c5c6cd",
+                    "secondary": "#0059bb",
+                    "on-tertiary-container": "#009299",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-fixed-variant": "#004493",
+                    "error": "#ba1a1a",
+                    "surface-dark": "#0A192F",
+                    "on-tertiary-fixed": "#002021",
+                    "on-surface-variant": "#44474d",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b9c7e4",
+                    "on-primary-container": "#76849f",
+                    "primary-container": "#0d1c32",
+                    "success-emerald": "#10B981",
+                    "on-primary-fixed-variant": "#39475f",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "surface-container-highest": "#e0e3e5",
+                    "secondary-container": "#0070ea",
+                    "secondary-fixed-dim": "#adc7ff",
+                    "tertiary": "#000000",
+                    "surface-dim": "#d8dadc",
+                    "tertiary-container": "#002021",
+                    "on-surface": "#191c1e",
+                    "accent-neon": "#00F5FF",
+                    "background": "#f7f9fb",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#001a41",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "surface-bright": "#f7f9fb",
+                    "surface": "#f7f9fb",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-fixed-variant": "#004f53",
+                    "secondary-fixed": "#d8e2ff",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "gradient-start": "#007BFF",
+                    "on-primary-fixed": "#0d1c32",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#63f7ff",
+                    "surface-tint": "#515f78",
+                    "tertiary-fixed-dim": "#00dce5",
+                    "outline": "#75777e",
+                    "gradient-end": "#00D4FF",
+                    "on-secondary-container": "#fefcff",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-container-high": "#e6e8ea"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "margin-tablet": "32px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "button-text": ["Inter"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .premium-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #007BFF, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-outline-variant/20 shadow-sm transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-surface-container-lowest flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+                HostNinja
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Products</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Solutions</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body-md text-body-md" href="#">Pricing</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Domains</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 text-secondary font-semibold hover:bg-surface-container-low/50 transition-all rounded-lg">Log In</button>
+<button class="px-6 py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:shadow-lg transform transition-transform hover:-translate-y-0.5">Sign Up</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24">
+<!-- Hero Section -->
+<header class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center mb-24">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-caps text-label-caps mb-6">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                ENTERPRISE-GRADE CLOUD HOSTING
+            </div>
+<h1 class="font-headline-lg text-headline-lg md:text-display-lg text-primary mb-6">Scalable Infrastructure for <span class="gradient-text">High-Growth</span> Teams</h1>
+<p class="max-w-2xl mx-auto text-on-surface-variant text-body-lg font-body-lg">Choose a plan that fits your current needs and scales automatically as you grow. No hidden fees, just pure performance.</p>
+</header>
+<!-- Pricing Tiers -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-32">
+<div class="pricing-grid">
+<!-- Starter Plan -->
+<div class="glass-card p-8 rounded-3xl flex flex-col h-full hover:scale-[1.02] transition-transform duration-500">
+<div class="mb-8">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Starter</h3>
+<p class="text-on-surface-variant mb-6">Perfect for personal projects and small blogs.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-headline-lg">$12</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>10GB SSD Storage</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>100GB Bandwidth</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>5 Email Accounts</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>1 Database</span>
+</li>
+</ul>
+<button class="w-full py-4 rounded-xl border border-primary text-primary font-button-text text-button-text hover:bg-primary hover:text-on-primary transition-all">Get Started</button>
+</div>
+<!-- Business Plan (Featured) -->
+<div class="relative glass-card p-8 rounded-3xl flex flex-col h-full border-t-4 border-t-accent-neon shadow-2xl scale-105 z-10 premium-glow transition-all duration-500">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent-neon text-primary font-label-caps text-[10px] px-4 py-1 rounded-full font-bold">MOST POPULAR</div>
+<div class="mb-8">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Business</h3>
+<p class="text-on-surface-variant mb-6">Advanced features for growing businesses.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-headline-lg">$39</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-3 font-semibold">
+<span class="material-symbols-outlined text-accent-neon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>100GB NVMe Storage</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Unlimited Bandwidth</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>50 Email Accounts</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>10 Databases</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Daily Backups</span>
+</li>
+</ul>
+<button class="w-full py-4 rounded-xl bg-primary text-on-primary font-button-text text-button-text shadow-lg hover:shadow-accent-neon/20 transition-all">Get Started</button>
+</div>
+<!-- Enterprise Plan -->
+<div class="glass-card p-8 rounded-3xl flex flex-col h-full hover:scale-[1.02] transition-transform duration-500">
+<div class="mb-8">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Enterprise</h3>
+<p class="text-on-surface-variant mb-6">Mission-critical infrastructure for scale.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-headline-lg">$99</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-12 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>1TB RAID Storage</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Unlimited Bandwidth</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Unlimited Emails</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Unlimited Databases</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-success-emerald">check_circle</span>
+<span>Dedicated Account Manager</span>
+</li>
+</ul>
+<button class="w-full py-4 rounded-xl border border-primary text-primary font-button-text text-button-text hover:bg-primary hover:text-on-primary transition-all">Get Started</button>
+</div>
+</div>
+</section>
+<!-- Detailed Comparison Table -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-32">
+<h2 class="font-headline-md text-headline-md text-center mb-16">Compare Feature by Feature</h2>
+<div class="overflow-x-auto rounded-3xl glass-card">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="p-8 font-headline-md text-primary w-1/4">Feature</th>
+<th class="p-8 font-label-caps text-label-caps text-secondary">STARTER</th>
+<th class="p-8 font-label-caps text-label-caps text-secondary bg-secondary-fixed/10">BUSINESS</th>
+<th class="p-8 font-label-caps text-label-caps text-secondary">ENTERPRISE</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr>
+<td class="p-8 font-semibold text-primary">Storage Type</td>
+<td class="p-8 text-on-surface-variant">Standard SSD</td>
+<td class="p-8 text-on-surface-variant font-semibold bg-secondary-fixed/5">Premium NVMe</td>
+<td class="p-8 text-on-surface-variant">Enterprise RAID</td>
+</tr>
+<tr>
+<td class="p-8 font-semibold text-primary">Bandwidth</td>
+<td class="p-8 text-on-surface-variant">100 GB</td>
+<td class="p-8 text-on-surface-variant font-semibold bg-secondary-fixed/5">Unlimited</td>
+<td class="p-8 text-on-surface-variant">Unlimited (Unmetered)</td>
+</tr>
+<tr>
+<td class="p-8 font-semibold text-primary">Email Accounts</td>
+<td class="p-8 text-on-surface-variant">5 Accounts</td>
+<td class="p-8 text-on-surface-variant font-semibold bg-secondary-fixed/5">50 Accounts</td>
+<td class="p-8 text-on-surface-variant">Unlimited</td>
+</tr>
+<tr>
+<td class="p-8 font-semibold text-primary">Databases</td>
+<td class="p-8 text-on-surface-variant">1 MariaDB</td>
+<td class="p-8 text-on-surface-variant font-semibold bg-secondary-fixed/5">10 MariaDB</td>
+<td class="p-8 text-on-surface-variant">Unlimited</td>
+</tr>
+<tr>
+<td class="p-8 font-semibold text-primary">SSL Certificate</td>
+<td class="p-8 text-success-emerald">Free Basic</td>
+<td class="p-8 text-success-emerald font-semibold bg-secondary-fixed/5">Free Wildcard</td>
+<td class="p-8 text-success-emerald">Custom EV SSL</td>
+</tr>
+<tr>
+<td class="p-8 font-semibold text-primary">Support</td>
+<td class="p-8 text-on-surface-variant">Ticket (24h)</td>
+<td class="p-8 text-on-surface-variant font-semibold bg-secondary-fixed/5">Live Chat (Instant)</td>
+<td class="p-8 text-on-surface-variant">Phone &amp; Dedicated</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="max-w-4xl mx-auto px-margin-mobile mb-32">
+<h2 class="font-headline-md text-headline-md text-center mb-12">Frequently Asked Questions</h2>
+<div class="space-y-6">
+<div class="glass-card p-6 rounded-2xl cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('hidden')">
+<div class="flex justify-between items-center">
+<h4 class="font-semibold text-lg text-primary">Can I upgrade my plan later?</h4>
+<span class="material-symbols-outlined transition-transform group-hover:translate-y-1">expand_more</span>
+</div>
+<div class="faq-answer hidden mt-4 text-on-surface-variant transition-all">
+                        Yes, you can upgrade or downgrade your hosting plan at any time through your dashboard. Changes take effect immediately, and billing is prorated.
+                    </div>
+</div>
+<div class="glass-card p-6 rounded-2xl cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('hidden')">
+<div class="flex justify-between items-center">
+<h4 class="font-semibold text-lg text-primary">Do you offer a money-back guarantee?</h4>
+<span class="material-symbols-outlined transition-transform group-hover:translate-y-1">expand_more</span>
+</div>
+<div class="faq-answer hidden mt-4 text-on-surface-variant transition-all">
+                        Absolutely. We offer a 30-day money-back guarantee for all new customers. If you're not satisfied, we'll refund your payment, no questions asked.
+                    </div>
+</div>
+<div class="glass-card p-6 rounded-2xl cursor-pointer group" onclick="this.querySelector('.faq-answer').classList.toggle('hidden')">
+<div class="flex justify-between items-center">
+<h4 class="font-semibold text-lg text-primary">Is there any downtime during migration?</h4>
+<span class="material-symbols-outlined transition-transform group-hover:translate-y-1">expand_more</span>
+</div>
+<div class="faq-answer hidden mt-4 text-on-surface-variant transition-all">
+                        Our migration ninjas handle the process with zero downtime. We mirror your site on our servers and test everything before switching DNS records.
+                    </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-dark border-t border-outline-variant/20 w-full py-16">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-2">
+<div class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+                    HostNinja
+                </div>
+<p class="text-on-surface-variant max-w-xs mb-8">Empowering developers and enterprises with ultra-fast, reliable cloud infrastructure since 2018.</p>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-secondary-fixed transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-secondary-fixed transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-label-caps text-label-caps text-primary">PLATFORM</h5>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">Status</a>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-label-caps text-label-caps text-primary">RESOURCES</h5>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">API</a>
+<a class="text-on-surface-variant hover:text-secondary hover:underline transition-all" href="#">Contact</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-16 pt-8 border-t border-outline-variant/10 text-center text-on-surface-variant opacity-80">
+            © 2024 HostNinja Cloud. Enterprise-grade reliability.
+        </div>
+</footer>
+<script>
+        // Simple micro-interaction for pricing card hover
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential subtle glow or scaling effect logic
+            });
+        });
+    </script>
+</body></html>

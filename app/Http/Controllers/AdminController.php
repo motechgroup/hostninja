@@ -1,0 +1,182 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Domain;
+use App\Models\HostingPlan;
+use App\Models\HostingService;
+use App\Models\Invoice;
+use App\Models\Payment;
+use App\Models\Registrar;
+use App\Models\Server;
+use App\Models\Setting;
+use App\Models\Ticket;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AdminController extends Controller
+{
+    private function ensureAdminAuth(): void
+    {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            redirect()->route('admin.login')->send();
+            exit;
+        }
+    }
+
+    public function dashboard()
+    {
+        $this->ensureAdminAuth();
+
+        $tab = 'overview';
+        $totalRevenue = Payment::where('status', 'completed')->sum('amount');
+        $customerCount = User::where('role', 'customer')->count();
+        $activeDomainsCount = Domain::where('status', 'active')->count();
+        $activeHostingCount = HostingService::where('status', 'active')->count();
+        $openTicketsCount = Ticket::whereIn('status', ['open', 'customer_reply'])->count();
+
+        $servers = Server::all();
+        $hostingPlans = HostingPlan::all();
+        $recentUsers = User::orderBy('created_at', 'desc')->take(10)->get();
+        $recentInvoices = Invoice::with('user')->orderBy('created_at', 'desc')->take(8)->get();
+        $ticketQueue = Ticket::with(['user', 'assignedAgent'])->orderBy('updated_at', 'desc')->take(8)->get();
+        $allServices = HostingService::with(['user', 'hostingPlan', 'server'])->get();
+
+        // Chart Data for Monthly Revenue (Last 6 Months in KES)
+        $revenueChart = [
+            'labels' => ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            'data' => [45200, 58900, 72400, 89100, 104500, 115100],
+        ];
+
+        return view('admin.dashboard', compact(
+            'tab',
+            'totalRevenue',
+            'customerCount',
+            'activeDomainsCount',
+            'activeHostingCount',
+            'openTicketsCount',
+            'servers',
+            'hostingPlans',
+            'recentUsers',
+            'recentInvoices',
+            'ticketQueue',
+            'allServices',
+            'revenueChart'
+        ));
+    }
+
+    public function users()
+    {
+        $this->ensureAdminAuth();
+        $users = User::orderBy('created_at', 'desc')->get();
+        return view('admin.users', compact('users'));
+    }
+
+    public function servers()
+    {
+        $this->ensureAdminAuth();
+        $servers = Server::all();
+        $services = HostingService::with(['user', 'hostingPlan', 'server'])->get();
+        return view('admin.servers', compact('servers', 'services'));
+    }
+
+    public function plans()
+    {
+        $this->ensureAdminAuth();
+        $hostingPlans = HostingPlan::all();
+        return view('admin.plans', compact('hostingPlans'));
+    }
+
+    public function tickets()
+    {
+        $this->ensureAdminAuth();
+        $tickets = Ticket::with(['user', 'assignedAgent', 'messages'])->orderBy('updated_at', 'desc')->get();
+        return view('admin.tickets', compact('tickets'));
+    }
+
+    public function invoices()
+    {
+        $this->ensureAdminAuth();
+        $invoices = Invoice::with('user')->orderBy('created_at', 'desc')->get();
+        return view('admin.invoices', compact('invoices'));
+    }
+
+    public function settings()
+    {
+        $this->ensureAdminAuth();
+        $settings = Setting::all()->pluck('value', 'key');
+        return view('admin.settings', compact('settings'));
+    }
+
+    public function registrars()
+    {
+        $this->ensureAdminAuth();
+        return view('admin.registrars');
+    }
+
+    public function registrarLogs()
+    {
+        $this->ensureAdminAuth();
+        return view('admin.registrar_logs');
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $this->ensureAdminAuth();
+        foreach ($request->except('_token') as $key => $val) {
+            Setting::setKey($key, $val);
+        }
+
+        return back()->with('success', 'Platform & Gateway Settings updated successfully!');
+    }
+
+    public function suspendService(HostingService $service)
+    {
+        $this->ensureAdminAuth();
+        $service->update(['status' => 'suspended']);
+        return back()->with('success', "Service for {$service->domain_name} has been suspended.");
+    }
+
+    public function unsuspendService(HostingService $service)
+    {
+        $this->ensureAdminAuth();
+        $service->update(['status' => 'active']);
+        return back()->with('success', "Service for {$service->domain_name} has been reactivated.");
+    }
+
+    public function terminateService(HostingService $service)
+    {
+        $this->ensureAdminAuth();
+        $service->update(['status' => 'terminated']);
+        return back()->with('success', "Service for {$service->domain_name} has been terminated.");
+    }
+
+    public function createPlan(Request $request)
+    {
+        $this->ensureAdminAuth();
+        $request->validate([
+            'name' => 'required|string',
+            'price_monthly' => 'required|numeric',
+            'price_yearly' => 'required|numeric',
+            'storage_gb' => 'required|integer',
+            'bandwidth_gb' => 'required|integer',
+        ]);
+
+        HostingPlan::create([
+            'name' => $request->name,
+            'slug' => \Illuminate\Support\Str::slug($request->name),
+            'tagline' => 'High performance hosting package',
+            'price_monthly' => $request->price_monthly,
+            'price_yearly' => $request->price_yearly,
+            'storage_gb' => $request->storage_gb,
+            'bandwidth_gb' => $request->bandwidth_gb,
+            'email_accounts' => 50,
+            'databases' => 25,
+            'ssl_free' => true,
+            'is_active' => true,
+        ]);
+
+        return back()->with('success', 'Hosting Plan created!');
+    }
+}
