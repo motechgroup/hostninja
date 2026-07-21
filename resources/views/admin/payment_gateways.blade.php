@@ -1,21 +1,7 @@
 <x-admin-layout>
     <x-slot name="title">HostNinja Admin | Payment Gateways & Logo Manager</x-slot>
 
-    <div class="space-y-8" x-data="{ 
-        categoryFilter: 'all', 
-        showAddModal: false, 
-        showEditModal: false, 
-        addLogoMode: 'upload',
-        editLogoMode: 'upload',
-        editMethod: { id: '', name: '', category: 'cards', sort_order: 1, show_in_footer: true, icon_svg: '' },
-        presets: {
-            card: '<svg class=\"w-auto h-7\" viewBox=\"0 0 36 24\" fill=\"none\"><rect width=\"36\" height=\"24\" rx=\"4\" fill=\"#1E293B\"/><rect y=\"6\" width=\"36\" height=\"4\" fill=\"#475569\"/><rect x=\"4\" y=\"14\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#38BDF8\"/></svg>',
-            mobile: '<svg class=\"w-auto h-7\" viewBox=\"0 0 36 24\" fill=\"none\"><rect width=\"36\" height=\"24\" rx=\"4\" fill=\"#059669\"/><path d=\"M12 7h12v10H12z\" fill=\"#ffffff\"/><circle cx=\"18\" cy=\"12\" r=\"3\" fill=\"#059669\"/></svg>',
-            crypto: '<svg class=\"w-auto h-7\" viewBox=\"0 0 36 24\" fill=\"none\"><rect width=\"36\" height=\"24\" rx=\"4\" fill=\"#F59E0B\"/><path d=\"M18 6l6 6-6 6-6-6 6-6z\" fill=\"#ffffff\"/></svg>',
-            bank: '<svg class=\"w-auto h-7\" viewBox=\"0 0 36 24\" fill=\"none\"><rect width=\"36\" height=\"24\" rx=\"4\" fill=\"#1E293B\"/><path d=\"M18 6L8 11v2h20v-2L18 6zm-8 8v5h2v-5h-2zm5 0v5h2v-5h-2zm5 0v5h2v-5h-2zm-12 6v2h20v-2H8z\" fill=\"#94A3B8\"/></svg>',
-            wallet: '<svg class=\"w-auto h-7\" viewBox=\"0 0 36 24\" fill=\"none\"><rect width=\"36\" height=\"24\" rx=\"4\" fill=\"#2563EB\"/><rect x=\"6\" y=\"8\" width=\"24\" height=\"12\" rx=\"2\" fill=\"#ffffff\"/><circle cx=\"24\" cy=\"14\" r=\"2\" fill=\"#2563EB\"/></svg>'
-        }
-    }">
+    <div class="space-y-8" x-data="paymentGatewayManager()">
         @if(session('success'))
             <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-xs font-bold flex items-center gap-2">
                 <span class="material-symbols-outlined text-emerald-600">check_circle</span>
@@ -411,4 +397,24 @@
         </div>
 
     </div>
+
+    <script>
+        function paymentGatewayManager() {
+            return {
+                categoryFilter: 'all',
+                showAddModal: false,
+                showEditModal: false,
+                addLogoMode: 'upload',
+                editLogoMode: 'upload',
+                editMethod: { id: '', name: '', category: 'cards', sort_order: 1, show_in_footer: true, icon_svg: '' },
+                presets: {
+                    card: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#1E293B"/><rect y="6" width="36" height="4" fill="#475569"/><rect x="4" y="14" width="8" height="4" rx="1" fill="#38BDF8"/></svg>',
+                    mobile: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#059669"/><path d="M12 7h12v10H12z" fill="#ffffff"/><circle cx="18" cy="12" r="3" fill="#059669"/></svg>',
+                    crypto: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#F59E0B"/><path d="M18 6l6 6-6 6-6-6 6-6z" fill="#ffffff"/></svg>',
+                    bank: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#1E293B"/><path d="M18 6L8 11v2h20v-2L18 6zm-8 8v5h2v-5h-2zm5 0v5h2v-5h-2zm5 0v5h2v-5h-2zm-12 6v2h20v-2H8z" fill="#94A3B8"/></svg>',
+                    wallet: '<svg class="w-auto h-7" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="4" fill="#2563EB"/><rect x="6" y="8" width="24" height="12" rx="2" fill="#ffffff"/><circle cx="24" cy="14" r="2" fill="#2563EB"/></svg>'
+                }
+            };
+        }
+    </script>
 </x-admin-layout>
