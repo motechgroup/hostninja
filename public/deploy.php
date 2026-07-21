@@ -48,11 +48,12 @@ if (!file_exists($baseDir . '/vendor/autoload.php')) {
     }
 }
 
-// 2. Neutralize Composer platform check if present
+// 2. Neutralize Composer platform check for PHP 8.3 compatibility
 $platformCheckFile = $baseDir . '/vendor/composer/platform_check.php';
-if (file_exists($platformCheckFile)) {
+if (is_dir(dirname($platformCheckFile))) {
     @file_put_contents($platformCheckFile, "<?php return;\n");
 }
+
 
 // 3. Auto-generate APP_KEY if missing in .env
 $keyGeneratedNotice = "";
