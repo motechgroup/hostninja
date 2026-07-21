@@ -175,32 +175,39 @@
             <div class="lg:col-span-3 space-y-8">
                 
                 <!-- Main Exact Match Domain Header Card -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2.5">
-                            <h3 class="font-['Hanken_Grotesk'] text-3xl font-extrabold text-slate-900 tracking-tight">{{ $results['base_name'] }}.com</h3>
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span>AVAILABLE</span>
-                            </span>
-                        </div>
-                        <p class="text-xs font-semibold text-slate-500">Secure the foundation of your digital empire today.</p>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <span class="text-slate-400 line-through text-xs font-bold font-['JetBrains_Mono'] block">$15.99</span>
-                            <div class="flex items-baseline gap-0.5">
-                                <span class="text-2xl font-extrabold text-[#0059bb]">$9.99</span>
-                                <span class="text-slate-500 text-xs font-semibold">/yr</span>
+                @if(isset($results['requested']))
+                    <div class="bg-white p-8 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2.5">
+                                <h3 class="font-['Hanken_Grotesk'] text-3xl font-extrabold text-slate-900 tracking-tight">{{ $results['requested']['domain'] }}</h3>
+                                @if($results['requested']['available'])
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        <span>AVAILABLE</span>
+                                    </span>
+                                @else
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1">
+                                        <span>TAKEN</span>
+                                    </span>
+                                @endif
                             </div>
+                            <p class="text-xs font-semibold text-slate-500">Secure the foundation of your digital empire today.</p>
                         </div>
-                        <button type="button" wire:click="addToCart('{{ $results['base_name'] }}.com', 9.99)" class="px-6 py-3 bg-[#0059bb] hover:bg-blue-600 text-white font-extrabold text-xs rounded-xl shadow-md flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
-                            <span>Add to Cart</span>
-                        </button>
+
+                        <div class="flex items-center gap-4">
+                            <div class="text-right">
+                                <div class="flex items-baseline gap-0.5">
+                                    <span class="text-2xl font-extrabold text-[#0059bb] font-['Hanken_Grotesk']">${{ number_format($results['requested']['price'], 2) }}</span>
+                                    <span class="text-slate-500 text-xs font-semibold">/yr</span>
+                                </div>
+                            </div>
+                            <button type="button" wire:click="addToCart('{{ $results['requested']['domain'] }}', {{ $results['requested']['price'] }})" class="px-6 py-3 bg-[#0059bb] hover:bg-blue-600 text-white font-extrabold text-xs rounded-xl shadow-md flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <!-- Featured Extensions Section -->
                 <div class="space-y-4">

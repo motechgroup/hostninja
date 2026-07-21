@@ -165,9 +165,21 @@ class DomainSearch extends Component
             ];
         }
 
+        $requestedExtension = null;
+        foreach ($extensionResults as $extRes) {
+            if ($extRes['is_requested']) {
+                $requestedExtension = $extRes;
+                break;
+            }
+        }
+        if (!$requestedExtension && !empty($extensionResults)) {
+            $requestedExtension = $extensionResults[0];
+        }
+
         $this->results = [
             'base_name' => $baseName,
             'user_typed' => $cleanInput,
+            'requested' => $requestedExtension,
             'available_count' => $availableCount,
             'extensions' => $extensionResults,
         ];
