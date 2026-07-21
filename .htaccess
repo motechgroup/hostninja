@@ -1,10 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Prevent direct browsing of sensitive files and directories
+    # Block direct web access to sensitive directories and config files
     RewriteRule ^(\.env|\.git|composer\.(json|lock)|package\.(json|lock)|storage|app|bootstrap|config|database|resources|routes) - [F,L,NC]
 
-    # Handle Front Controller...
+    # Handle Front Controller routing to public directory
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
