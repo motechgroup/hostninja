@@ -110,10 +110,13 @@ class DomainSearch extends Component
         $this->hasAiGenerated = true;
     }
 
-    public function selectAiDomain(string $domainName): void
+    public function selectAiDomain(string $domainName)
     {
         $this->query = $domainName;
-        $this->search(app(RegistrarManager::class));
+        $extParts = explode('.', $domainName);
+        $ext = '.' . implode('.', array_slice($extParts, 1));
+        $price = $this->tldPrices[$ext] ?? 12.00;
+        return $this->addToCart($domainName, $price);
     }
 
     public function search(RegistrarManager $manager): void
@@ -172,13 +175,16 @@ class DomainSearch extends Component
         $this->hasSearched = true;
     }
 
-    public function addToCart(string $domainName, float $price): void
+    public function addToCart(string $domainName, float $price)
     {
         $cart = session()->get('cart_domains', []);
-        $cart[$domainName] = $price * 130; // internal store equivalent in KES
+        $priceKes = ($price < 100) ? round($price * 130, 2) : $price;
+        $cart[$domainName] = $priceKes;
         session()->put('cart_domains', $cart);
 
-        $this->cartMessage = "{$domainName} (\$" . number_format($price, 2) . ") added to registration cart!";
+        $this->cartMessage = "{$domainName} (KES " . number_format($priceKes, 2) . ") added to registration cart!";
+
+        return redirect()->route('checkout.index', ['domain' => $domainName]);
     }
 
     public function render()
