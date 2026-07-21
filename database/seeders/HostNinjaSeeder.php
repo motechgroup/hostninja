@@ -627,5 +627,114 @@ class HostNinjaSeeder extends Seeder
         TicketMessage::firstOrCreate(
             ['ticket_id' => $ticket2->id, 'user_id' => $customer->id, 'message' => 'Hi, does HostNinja support instant STK push auto-activation for pending invoices?']
         );
+
+        // Seed Supported Control Panels
+        $defaultPanels = [
+            [
+                'name' => 'cPanel & WHM',
+                'slug' => 'cpanel-whm',
+                'description' => 'Industry-standard Linux web hosting control panel for easy account management, DNS, and automation.',
+                'official_url' => 'https://cpanel.net',
+                'featured' => true,
+                'display_order' => 1,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#FF6C2C"/><text x="12" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="16">cPanel</text><text x="72" y="21" fill="#1E293B" font-weight="900" font-family="sans-serif" font-size="14">& WHM</text></svg>',
+            ],
+            [
+                'name' => 'Plesk',
+                'slug' => 'plesk',
+                'description' => 'Leading WebOps hosting platform to run, automate, and grow applications, websites, and cloud servers.',
+                'official_url' => 'https://plesk.com',
+                'featured' => true,
+                'display_order' => 2,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#52B0E7"/><path d="M16 8l10 8-10 8V8z" fill="#FFFFFF"/><text x="36" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="16">Plesk</text></svg>',
+            ],
+            [
+                'name' => 'DirectAdmin',
+                'slug' => 'directadmin',
+                'description' => 'Lightweight, high-performance web hosting control panel designed for speed and reliability.',
+                'official_url' => 'https://directadmin.com',
+                'featured' => true,
+                'display_order' => 3,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#2B3990"/><path d="M12 8h12v4H12zM12 14h16v4H12zM12 20h8v4H12z" fill="#00AEEF"/><text x="34" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">DirectAdmin</text></svg>',
+            ],
+            [
+                'name' => 'CyberPanel',
+                'slug' => 'cyberpanel',
+                'description' => 'Next-gen web hosting control panel powered by OpenLiteSpeed with built-in caching and SSL.',
+                'official_url' => 'https://cyberpanel.net',
+                'featured' => true,
+                'display_order' => 4,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#0B132B"/><circle cx="20" cy="16" r="8" stroke="#00F5FF" stroke-width="3"/><text x="36" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">CyberPanel</text></svg>',
+            ],
+            [
+                'name' => 'Webuzo',
+                'slug' => 'webuzo',
+                'description' => 'Single and multi-user control panel automating server administration and 1-click app deployments.',
+                'official_url' => 'https://webuzo.com',
+                'featured' => false,
+                'display_order' => 5,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#10B981"/><path d="M12 16l4-8 4 8h-8z" fill="#FFFFFF"/><text x="34" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="15">Webuzo</text></svg>',
+            ],
+            [
+                'name' => 'ISPConfig',
+                'slug' => 'ispconfig',
+                'description' => 'Open-source enterprise hosting control panel capable of managing multiple servers from one master panel.',
+                'official_url' => 'https://ispconfig.org',
+                'featured' => false,
+                'display_order' => 6,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#D97706"/><rect x="12" y="9" width="14" height="14" rx="2" fill="#FFFFFF"/><text x="34" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="14">ISPConfig</text></svg>',
+            ],
+            [
+                'name' => 'aaPanel',
+                'slug' => 'aapanel',
+                'description' => 'Simple yet powerful modular open-source web hosting control panel with one-click LEMP stack installation.',
+                'official_url' => 'https://aapanel.com',
+                'featured' => false,
+                'display_order' => 7,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#2563EB"/><text x="12" y="22" fill="#38BDF8" font-weight="900" font-family="sans-serif" font-size="18">aa</text><text x="36" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="15">Panel</text></svg>',
+            ],
+            [
+                'name' => 'Virtualmin',
+                'slug' => 'virtualmin',
+                'description' => 'Powerful and flexible Webmin-based domain management and virtual hosting control panel.',
+                'official_url' => 'https://virtualmin.com',
+                'featured' => false,
+                'display_order' => 8,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#475569"/><path d="M12 20L20 8l4 12" stroke="#38BDF8" stroke-width="3"/><text x="32" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">Virtualmin</text></svg>',
+            ],
+            [
+                'name' => 'Hestia Control Panel',
+                'slug' => 'hestia-cp',
+                'description' => 'Clean, fast, and modern open-source web hosting control panel with NGINX/Apache stack.',
+                'official_url' => 'https://hestiacp.com',
+                'featured' => false,
+                'display_order' => 9,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#7C3AED"/><circle cx="18" cy="16" r="6" fill="#F43F5E"/><text x="32" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">HestiaCP</text></svg>',
+            ],
+            [
+                'name' => 'CloudPanel',
+                'slug' => 'cloudpanel',
+                'description' => 'Modern PHP & Node.js server management control panel built for high performance and cloud environments.',
+                'official_url' => 'https://cloudpanel.io',
+                'featured' => true,
+                'display_order' => 10,
+                'logo' => '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="32" rx="6" fill="#0EA5E9"/><path d="M12 18a4 4 0 018 0h6a3 3 0 00-3-3 4 4 0 00-7-2 4 4 0 00-4 5z" fill="#FFFFFF"/><text x="34" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">CloudPanel</text></svg>',
+            ],
+        ];
+
+        foreach ($defaultPanels as $panel) {
+            \App\Models\HostingControlPanel::firstOrCreate(
+                ['slug' => $panel['slug']],
+                [
+                    'name' => $panel['name'],
+                    'description' => $panel['description'],
+                    'official_url' => $panel['official_url'],
+                    'featured' => $panel['featured'],
+                    'display_order' => $panel['display_order'],
+                    'logo' => $panel['logo'],
+                    'enabled' => true,
+                ]
+            );
+        }
     }
 }

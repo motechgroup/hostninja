@@ -334,6 +334,114 @@ class AdminController extends Controller
         return back()->with('success', "Credentials for {$method->name} updated successfully!");
     }
 
+    public function controlPanels()
+    {
+        $this->ensureAdminAuth();
+        $controlPanels = \App\Models\HostingControlPanel::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
+        return view('admin.control_panels', compact('controlPanels'));
+    }
+
+    public function createControlPanel(Request $request)
+    {
+        $this->ensureAdminAuth();
+        $request->validate([
+            'name' => 'required|string',
+            'slug' => 'nullable|string|unique:hosting_control_panels,slug',
+            'description' => 'nullable|string',
+            'official_url' => 'nullable|url',
+            'display_order' => 'nullable|integer',
+            'logo' => 'nullable|string',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        $logoContent = $request->logo ?? '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#0059BB"/><text x="12" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="14">' . e($request->name) . '</text></svg>';
+
+        if ($request->hasFile('logo_file')) {
+            $file = $request->file('logo_file');
+            $filename = time() . '_' . \Illuminate\Support\Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('images/control_panels');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $logoContent = 'images/control_panels/' . $filename;
+        }
+
+        \App\Models\HostingControlPanel::create([
+            'name' => $request->name,
+            'slug' => $request->slug ? \Illuminate\Support\Str::slug($request->slug) : \Illuminate\Support\Str::slug($request->name),
+            'description' => $request->description,
+            'official_url' => $request->official_url,
+            'display_order' => $request->display_order ?? 99,
+            'featured' => $request->has('featured'),
+            'enabled' => true,
+            'logo' => $logoContent,
+        ]);
+
+        return back()->with('success', "Control Panel '{$request->name}' added successfully!");
+    }
+
+    public function updateControlPanel(Request $request, \App\Models\HostingControlPanel $panel)
+    {
+        $this->ensureAdminAuth();
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'official_url' => 'nullable|url',
+            'display_order' => 'required|integer',
+            'logo' => 'nullable|string',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        $logoContent = $request->filled('logo') ? $request->logo : $panel->logo;
+
+        if ($request->hasFile('logo_file')) {
+            $file = $request->file('logo_file');
+            $filename = time() . '_' . \Illuminate\Support\Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('images/control_panels');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $logoContent = 'images/control_panels/' . $filename;
+        }
+
+        $panel->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'official_url' => $request->official_url,
+            'display_order' => $request->display_order,
+            'featured' => $request->has('featured'),
+            'logo' => $logoContent,
+        ]);
+
+        return back()->with('success', "Control Panel '{$panel->name}' updated!");
+    }
+
+    public function toggleControlPanel(\App\Models\HostingControlPanel $panel)
+    {
+        $this->ensureAdminAuth();
+        $panel->update(['enabled' => !$panel->enabled]);
+        $status = $panel->enabled ? 'enabled' : 'disabled';
+        return back()->with('success', "Control Panel '{$panel->name}' is now {$status}.");
+    }
+
+    public function toggleFeaturedControlPanel(\App\Models\HostingControlPanel $panel)
+    {
+        $this->ensureAdminAuth();
+        $panel->update(['featured' => !$panel->featured]);
+        $status = $panel->featured ? 'marked as Featured' : 'unmarked as Featured';
+        return back()->with('success', "Control Panel '{$panel->name}' {$status}.");
+    }
+
+    public function deleteControlPanel(\App\Models\HostingControlPanel $panel)
+    {
+        $this->ensureAdminAuth();
+        $name = $panel->name;
+        $panel->delete();
+        return back()->with('success', "Control Panel '{$name}' deleted successfully.");
+    }
+
     public function deletePaymentMethod(\App\Models\PaymentMethod $method)
     {
         $this->ensureAdminAuth();

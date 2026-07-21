@@ -81,6 +81,14 @@ Route::post('/admin/payment-methods/{method}/update', [AdminController::class, '
 Route::post('/admin/payment-methods/{method}/credentials', [AdminController::class, 'updatePaymentMethodCredentials'])->name('admin.payment-methods.credentials');
 Route::post('/admin/payment-methods', [AdminController::class, 'createPaymentMethod'])->name('admin.payment-methods.create');
 Route::delete('/admin/payment-methods/{method}', [AdminController::class, 'deletePaymentMethod'])->name('admin.payment-methods.delete');
+
+// Admin Supported Control Panels
+Route::get('/admin/control-panels', [AdminController::class, 'controlPanels'])->name('admin.control-panels');
+Route::post('/admin/control-panels', [AdminController::class, 'createControlPanel'])->name('admin.control-panels.create');
+Route::post('/admin/control-panels/{panel}/update', [AdminController::class, 'updateControlPanel'])->name('admin.control-panels.update');
+Route::post('/admin/control-panels/{panel}/toggle', [AdminController::class, 'toggleControlPanel'])->name('admin.control-panels.toggle');
+Route::post('/admin/control-panels/{panel}/toggle-featured', [AdminController::class, 'toggleFeaturedControlPanel'])->name('admin.control-panels.toggle-featured');
+Route::delete('/admin/control-panels/{panel}', [AdminController::class, 'deleteControlPanel'])->name('admin.control-panels.delete');
 Route::get('/admin/integrations/registrars', [AdminController::class, 'registrars'])->name('admin.registrars');
 Route::get('/admin/integrations/registrar-logs', [AdminController::class, 'registrarLogs'])->name('admin.registrar-logs');
 

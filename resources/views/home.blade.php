@@ -197,6 +197,9 @@
         </div>
     </section>
 
+    <!-- Supported Control Panels Showcase Section -->
+    <x-control-panels-section />
+
     <!-- Stitch CTA Section -->
     <section class="py-16 px-6 max-w-7xl mx-auto mb-20">
         <div class="bg-black text-white rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">

@@ -55,6 +55,16 @@
                 <span>Invoices & Billing</span>
             </a>
 
+            <!-- Website Section -->
+            <div class="pt-3 pb-1 px-4">
+                <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider font-['JetBrains_Mono']">Website</span>
+            </div>
+
+            <a href="{{ route('admin.control-panels') }}" class="flex items-center gap-3 {{ request()->routeIs('admin.control-panels*') ? 'bg-[#0059bb] text-white shadow-md shadow-blue-500/20' : 'text-slate-600 hover:bg-slate-100' }} rounded-xl px-4 py-2.5 font-semibold text-xs transition-colors">
+                <span class="material-symbols-outlined text-lg">grid_view</span>
+                <span>Supported Control Panels</span>
+            </a>
+
             <!-- Integrations Section -->
             <div class="pt-3 pb-1 px-4">
                 <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider font-['JetBrains_Mono']">Integrations</span>
