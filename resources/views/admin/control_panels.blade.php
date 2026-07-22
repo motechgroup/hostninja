@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-slot name="title">HostNinja Admin | Supported Control Panels Manager</x-slot>
+    <x-slot name="title">HostNinja Admin | Supported Control Panels & Logo Manager</x-slot>
 
     <div class="space-y-8" x-data="controlPanelManager()">
         @if(session('success'))
@@ -12,8 +12,8 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-                <h1 class="font-['Hanken_Grotesk'] text-2xl font-extrabold text-slate-900">Supported Hosting Control Panels</h1>
-                <p class="text-xs text-slate-500 mt-1">Manage control panels showcase on the homepage, official URLs, featured badges, and logos.</p>
+                <h1 class="font-['Hanken_Grotesk'] text-2xl font-extrabold text-slate-900">Supported Control Panels & Logo Manager</h1>
+                <p class="text-xs text-slate-500 mt-1">Manage control panel logos, official website links, descriptions, and homepage showcase visibility.</p>
             </div>
             <div class="flex gap-3">
                 <button type="button" @click="showAddModal = true" class="px-4 py-2.5 bg-[#0059bb] hover:bg-blue-600 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-2">
@@ -60,24 +60,24 @@
 
             <div class="glass-card p-6 rounded-2xl border border-slate-200">
                 <div class="flex items-center justify-between">
-                    <span class="text-slate-500 text-xs font-semibold">Showcase Section</span>
+                    <span class="text-slate-500 text-xs font-semibold">Showcase Interactive Grid</span>
                     <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                        <span class="material-symbols-outlined text-lg">web</span>
+                        <span class="material-symbols-outlined text-lg">touch_app</span>
                     </div>
                 </div>
                 <div class="font-['Hanken_Grotesk'] text-xl font-extrabold text-emerald-600 mt-2">
-                    ACTIVE
+                    LOGO GRID
                 </div>
-                <p class="text-[10px] text-slate-400 mt-1">Live on homepage</p>
+                <p class="text-[10px] text-slate-400 mt-1">Click logo to view modal</p>
             </div>
         </div>
 
-        <!-- Control Panels Grid -->
+        <!-- Control Panels Manager Grid -->
         <div class="glass-card p-6 rounded-3xl border border-slate-200 space-y-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                 <div>
-                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Hosting Control Panels ({{ count($controlPanels) }})</h3>
-                    <p class="text-xs text-slate-500">Add, edit, reorder, or toggle supported control panels and software platforms.</p>
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Hosting Control Panels & Logos ({{ count($controlPanels) }})</h3>
+                    <p class="text-xs text-slate-500">Upload custom logos, edit provider URLs, manage descriptions, and toggle homepage visibility.</p>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                     <div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-[#0059bb]/50 transition-all space-y-3 flex flex-col justify-between">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
-                                <div class="p-1.5 bg-slate-950 rounded-xl border border-slate-800 shadow-inner flex items-center justify-center">
+                                <div class="p-2 bg-slate-950 rounded-xl border border-slate-800 shadow-inner flex items-center justify-center min-h-[48px]">
                                     {!! $cp->logo_html !!}
                                 </div>
                                 
@@ -94,7 +94,7 @@
                                     @if($cp->featured)
                                         <span class="text-[9px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">FEATURED</span>
                                     @endif
-                                    <span class="text-[10px] font-['JetBrains_Mono'] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Order #{{ $cp->display_order }}</span>
+                                    <span class="text-[10px] font-['JetBrains_Mono'] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">#{{ $cp->display_order }}</span>
                                 </div>
                             </div>
 
@@ -102,7 +102,7 @@
                                 <h4 class="font-bold text-xs text-slate-900 flex items-center justify-between">
                                     <span>{{ $cp->name }}</span>
                                     @if($cp->official_url)
-                                        <a href="{{ $cp->official_url }}" target="_blank" class="text-[10px] text-[#0059bb] hover:underline" title="Visit official site">↗ Site</a>
+                                        <a href="{{ $cp->official_url }}" target="_blank" class="text-[10px] text-[#0059bb] hover:underline font-bold" title="Visit official site">↗ Site</a>
                                     @endif
                                 </h4>
                                 <p class="text-[11px] text-slate-500 line-clamp-2 mt-1">{{ $cp->description }}</p>
@@ -129,18 +129,17 @@
                                 </form>
                             </div>
 
-                            <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-50">
-                                <button type="button" @click="editPanel = { id: '{{ $cp->id }}', name: '{{ addslashes($cp->name) }}', description: '{{ addslashes($cp->description ?? '') }}', official_url: '{{ addslashes($cp->official_url ?? '') }}', display_order: {{ $cp->display_order }}, featured: {{ $cp->featured ? 'true' : 'false' }}, logo: '{{ addslashes($cp->logo ?? '') }}' }; showEditModal = true" class="text-[11px] text-slate-500 hover:text-[#0059bb] font-semibold flex items-center gap-0.5">
+                            <div class="flex items-center justify-between pt-1 border-t border-slate-50">
+                                <button type="button" @click="editPanel = { id: '{{ $cp->id }}', name: '{{ addslashes($cp->name) }}', description: '{{ addslashes($cp->description ?? '') }}', official_url: '{{ addslashes($cp->official_url ?? '') }}', display_order: {{ $cp->display_order }}, featured: {{ $cp->featured ? 'true' : 'false' }}, logo: '{{ addslashes($cp->logo ?? '') }}' }; editLogoMode = 'upload'; showEditModal = true" class="text-[11px] text-[#0059bb] hover:underline font-bold flex items-center gap-0.5">
                                     <span class="material-symbols-outlined text-xs">edit</span>
-                                    <span>Edit</span>
+                                    <span>Manage Logo & Details</span>
                                 </button>
-                                <span class="text-slate-300">&bull;</span>
+                                
                                 <form method="POST" action="{{ route('admin.control-panels.delete', $cp->id) }}" onsubmit="return confirm('Delete control panel {{ $cp->name }}?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-[11px] text-slate-400 hover:text-rose-600 font-semibold flex items-center gap-0.5">
                                         <span class="material-symbols-outlined text-xs">delete</span>
-                                        <span>Delete</span>
                                     </button>
                                 </form>
                             </div>
@@ -195,12 +194,15 @@
                         </div>
                     </div>
 
-                    <!-- Logo Choice Options -->
+                    <!-- Logo Manager Options -->
                     <div class="space-y-3 pt-2 border-t border-slate-100">
-                        <label class="text-xs font-bold text-slate-800 block">Select Logo / Icon Source:</label>
+                        <label class="text-xs font-bold text-slate-800 block">Manage Logo / Icon:</label>
                         <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                             <button type="button" @click="addLogoMode = 'upload'" :class="addLogoMode === 'upload' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
-                                📁 Upload Logo Image
+                                📁 Upload Logo File
+                            </button>
+                            <button type="button" @click="addLogoMode = 'presets'" :class="addLogoMode === 'presets' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
+                                🎨 Presets
                             </button>
                             <button type="button" @click="addLogoMode = 'custom'" :class="addLogoMode === 'custom' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
                                 💻 Custom SVG / URL
@@ -209,14 +211,26 @@
 
                         <!-- Mode 1: File Upload -->
                         <div x-show="addLogoMode === 'upload'" class="space-y-2">
-                            <label class="text-[11px] text-slate-500 block">Upload Logo Image (SVG, PNG, JPG, WebP):</label>
+                            <label class="text-[11px] text-slate-500 block">Upload Image File (SVG, PNG, JPG, WebP - max 2MB):</label>
                             <input type="file" name="logo_file" accept="image/*" class="w-full text-xs text-slate-600 p-2 bg-slate-50 border border-slate-200 rounded-xl file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#0059bb] file:text-white">
                         </div>
 
-                        <!-- Mode 2: Custom SVG / URL -->
-                        <div x-show="addLogoMode === 'custom'" class="space-y-2" x-cloak>
+                        <!-- Mode 2: Presets -->
+                        <div x-show="addLogoMode === 'presets'" class="space-y-2" x-cloak>
+                            <label class="text-[11px] text-slate-500 block">Click a preset vector icon:</label>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="(svg, key) in presets" :key="key">
+                                    <button type="button" @click="$refs.addIconInput.value = svg" class="p-2 bg-slate-900 rounded-xl hover:ring-2 hover:ring-[#0059bb] transition-all flex items-center justify-center">
+                                        <div x-html="svg"></div>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Mode 3: Custom SVG / URL -->
+                        <div x-show="addLogoMode === 'custom' || addLogoMode === 'presets'" class="space-y-2" x-cloak>
                             <label class="text-[11px] text-slate-500 block">SVG Code or Image URL Path:</label>
-                            <textarea name="logo" rows="3" placeholder='<svg class="h-10 w-auto" viewBox="0 0 120 32">...</svg>' class="w-full p-3 bg-slate-900 text-white rounded-xl text-xs font-mono"></textarea>
+                            <textarea x-ref="addIconInput" name="logo" rows="3" placeholder='<svg class="h-10 w-auto" viewBox="0 0 120 32">...</svg>' class="w-full p-3 bg-slate-900 text-white rounded-xl text-xs font-mono"></textarea>
                         </div>
                     </div>
 
@@ -228,11 +242,11 @@
             </div>
         </div>
 
-        <!-- MODAL 2: EDIT CONTROL PANEL -->
+        <!-- MODAL 2: EDIT CONTROL PANEL & LOGO -->
         <div x-show="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak>
             <div class="bg-white p-8 rounded-3xl border border-slate-200 max-w-xl w-full shadow-2xl space-y-6" @click.away="showEditModal = false">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Edit Control Panel</h3>
+                    <h3 class="font-['Hanken_Grotesk'] text-lg font-bold text-slate-900">Manage Control Panel & Logo</h3>
                     <button type="button" @click="showEditModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
                 </div>
 
@@ -270,10 +284,13 @@
 
                     <!-- Logo Choice Options -->
                     <div class="space-y-3 pt-2 border-t border-slate-100">
-                        <label class="text-xs font-bold text-slate-800 block">Change Logo / Icon:</label>
+                        <label class="text-xs font-bold text-slate-800 block">Change / Update Logo:</label>
                         <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                             <button type="button" @click="editLogoMode = 'upload'" :class="editLogoMode === 'upload' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
-                                📁 Upload New Image
+                                📁 Upload New Image File
+                            </button>
+                            <button type="button" @click="editLogoMode = 'presets'" :class="editLogoMode === 'presets' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
+                                🎨 Presets
                             </button>
                             <button type="button" @click="editLogoMode = 'custom'" :class="editLogoMode === 'custom' ? 'bg-[#0059bb] text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-3 py-1.5 rounded-lg text-xs transition-all">
                                 💻 Custom SVG Code / URL
@@ -286,8 +303,20 @@
                             <input type="file" name="logo_file" accept="image/*" class="w-full text-xs text-slate-600 p-2 bg-slate-50 border border-slate-200 rounded-xl file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#0059bb] file:text-white">
                         </div>
 
-                        <!-- Mode 2: Custom SVG / URL -->
-                        <div x-show="editLogoMode === 'custom'" class="space-y-2" x-cloak>
+                        <!-- Mode 2: Presets -->
+                        <div x-show="editLogoMode === 'presets'" class="space-y-2" x-cloak>
+                            <label class="text-[11px] text-slate-500 block">Click a preset vector icon to apply:</label>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="(svg, key) in presets" :key="key">
+                                    <button type="button" @click="editPanel.logo = svg" class="p-2 bg-slate-900 rounded-xl hover:ring-2 hover:ring-[#0059bb] transition-all flex items-center justify-center">
+                                        <div x-html="svg"></div>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Mode 3: Custom SVG / URL -->
+                        <div x-show="editLogoMode === 'custom' || editLogoMode === 'presets'" class="space-y-2" x-cloak>
                             <label class="text-[11px] text-slate-500 block">SVG Code or Image URL Path:</label>
                             <textarea name="logo" x-model="editPanel.logo" rows="3" class="w-full p-3 bg-slate-900 text-white rounded-xl text-xs font-mono"></textarea>
                         </div>
@@ -310,7 +339,14 @@
                 showEditModal: false,
                 addLogoMode: 'upload',
                 editLogoMode: 'upload',
-                editPanel: { id: '', name: '', description: '', official_url: '', display_order: 1, featured: false, logo: '' }
+                editPanel: { id: '', name: '', description: '', official_url: '', display_order: 1, featured: false, logo: '' },
+                presets: {
+                    cpanel: '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#FF6C2C"/><text x="12" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="16">cPanel</text><text x="72" y="21" fill="#1E293B" font-weight="900" font-family="sans-serif" font-size="14">& WHM</text></svg>',
+                    plesk: '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#52B0E7"/><path d="M16 8l10 8-10 8V8z" fill="#FFFFFF"/><text x="36" y="21" fill="#FFFFFF" font-weight="900" font-family="sans-serif" font-size="16">Plesk</text></svg>',
+                    directadmin: '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#2B3990"/><path d="M12 8h12v4H12zM12 14h16v4H12zM12 20h8v4H12z" fill="#00AEEF"/><text x="34" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">DirectAdmin</text></svg>',
+                    cloudpanel: '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#0EA5E9"/><path d="M12 18a4 4 0 018 0h6a3 3 0 00-3-3 4 4 0 00-7-2 4 4 0 00-4 5z" fill="#FFFFFF"/><text x="34" y="21" fill="#FFFFFF" font-weight="800" font-family="sans-serif" font-size="13">CloudPanel</text></svg>',
+                    whmcs: '<svg class="h-10 w-auto" viewBox="0 0 120 32" fill="none"><rect width="120" height="32" rx="6" fill="#1E293B"/><text x="12" y="21" fill="#38BDF8" font-weight="900" font-family="sans-serif" font-size="16">WHMCS</text></svg>'
+                }
             };
         }
     </script>

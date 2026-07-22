@@ -10,7 +10,7 @@
 @endphp
 
 @if($controlPanels->count() > 0)
-    <section class="py-20 relative overflow-hidden bg-slate-950 text-white border-t border-slate-800/80">
+    <section class="py-20 relative overflow-hidden bg-slate-950 text-white border-t border-slate-800/80" x-data="{ showModal: false, activePanel: null }">
         <!-- Subtle Radial Background Accents -->
         <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -28,58 +28,96 @@
                 </h2>
 
                 <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-                    Connect your preferred hosting control panel and automate account provisioning, management, billing, and domain services from one powerful platform.
+                    Connect your preferred hosting control panel and automate account provisioning, management, billing, and domain services from one powerful platform. Click any logo to view details.
                 </p>
             </div>
 
-            <!-- Grid Layout (2 cols mobile, 3 cols tablet, 5 cols desktop) -->
+            <!-- Clean Logo Grid (2 cols mobile, 3 cols tablet, 5 cols desktop) -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                 @foreach($controlPanels as $panel)
-                    <div class="group relative bg-slate-900/70 hover:bg-slate-900 border border-slate-800 hover:border-[#0059bb]/60 rounded-2xl p-5 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] flex flex-col justify-between space-y-4">
+                    <button type="button" 
+                            data-panel="{{ json_encode([
+                                'id' => $panel->id,
+                                'name' => $panel->name,
+                                'description' => $panel->description,
+                                'official_url' => $panel->official_url,
+                                'featured' => $panel->featured,
+                                'logo_html' => $panel->logo_html,
+                            ]) }}"
+                            @click="activePanel = JSON.parse($el.dataset.panel); showModal = true"
+                            class="group relative bg-slate-900/60 hover:bg-slate-900 border border-slate-800/90 hover:border-[#0059bb]/70 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.03] flex flex-col items-center justify-center space-y-3 cursor-pointer text-center min-h-[120px]">
                         
-                        <!-- Top Bar: Logo & Featured Badge -->
-                        <div class="space-y-3">
-                            <div class="flex items-start justify-between gap-2">
-                                <div class="p-2 rounded-xl bg-slate-950 border border-slate-800/80 group-hover:border-slate-700 transition-colors flex items-center justify-center">
-                                    {!! $panel->logo_html !!}
-                                </div>
+                        @if($panel->featured)
+                            <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[8px] font-extrabold font-['JetBrains_Mono'] bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 uppercase tracking-wider">
+                                FEATURED
+                            </span>
+                        @endif
 
-                                @if($panel->featured)
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold font-['JetBrains_Mono'] bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 uppercase tracking-wider shrink-0">
-                                        FEATURED
-                                    </span>
-                                @endif
-                            </div>
+                        <!-- Clean Uniform Logo Display -->
+                        <div class="h-12 flex items-center justify-center filter group-hover:brightness-110 transition-all duration-300">
+                            {!! $panel->logo_html !!}
+                        </div>
 
-                            <!-- Panel Title & Description -->
+                        <!-- Minimal Title & Click Action Indicator -->
+                        <div class="flex items-center gap-1 text-slate-400 group-hover:text-[#00F5FF] text-xs font-bold transition-colors">
+                            <span>{{ $panel->name }}</span>
+                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">info</span>
+                        </div>
+                    </button>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- CONTROL PANEL DETAILS MODAL -->
+        <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" x-cloak>
+            <div class="bg-slate-900 border border-slate-700/80 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl space-y-6 relative text-white" @click.away="showModal = false">
+                <!-- Close Button -->
+                <button type="button" @click="showModal = false" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+
+                <template x-if="activePanel">
+                    <div class="space-y-6">
+                        <!-- Top Header with Logo & Title -->
+                        <div class="flex items-center gap-4 border-b border-slate-800 pb-5">
+                            <div class="p-3 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner flex items-center justify-center shrink-0" x-html="activePanel.logo_html"></div>
                             <div>
-                                <h3 class="font-['Hanken_Grotesk'] text-base font-bold text-white group-hover:text-[#00F5FF] transition-colors">
-                                    {{ $panel->name }}
-                                </h3>
-                                @if($panel->description)
-                                    <p class="text-[11px] text-slate-400 leading-snug mt-1 line-clamp-2">
-                                        {{ $panel->description }}
-                                    </p>
-                                @endif
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-['Hanken_Grotesk'] text-xl font-extrabold text-white" x-text="activePanel.name"></h3>
+                                    <template x-if="activePanel.featured">
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold font-['JetBrains_Mono'] bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 uppercase tracking-wider">
+                                            FEATURED
+                                        </span>
+                                    </template>
+                                </div>
+                                <div class="mt-1 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    <span>Supported & Fully Integrated</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Card Footer: Status & Learn More Link -->
-                        <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
-                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                <span>Supported</span>
-                            </span>
+                        <!-- Description Body -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider font-['JetBrains_Mono']">Overview & Compatibility</h4>
+                            <p class="text-slate-300 text-sm leading-relaxed" x-text="activePanel.description || 'Seamlessly connects with HostNinja for automated provisioning, server management, billing, and DNS synchronization.'"></p>
+                        </div>
 
-                            @if($panel->official_url)
-                                <a href="{{ $panel->official_url }}" target="_blank" rel="noopener noreferrer" class="text-[10px] font-bold text-slate-400 hover:text-white flex items-center gap-0.5 transition-colors" title="Visit {{ $panel->name }} official website">
-                                    <span>Learn More</span>
-                                    <span class="material-symbols-outlined text-xs">north_east</span>
+                        <!-- Action Footer -->
+                        <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+                            <button type="button" @click="showModal = false" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-colors">
+                                Close
+                            </button>
+
+                            <template x-if="activePanel.official_url">
+                                <a :href="activePanel.official_url" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-[#0059bb] hover:bg-blue-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-1.5 transition-all">
+                                    <span>Visit Provider Website</span>
+                                    <span class="material-symbols-outlined text-sm">open_in_new</span>
                                 </a>
-                            @endif
+                            </template>
                         </div>
                     </div>
-                @endforeach
+                </template>
             </div>
         </div>
     </section>

@@ -48,11 +48,9 @@ class ControlPanelsTest extends TestCase
             'logo' => '<svg viewBox="0 0 120 32"><text>DISABLED</text></svg>',
         ]);
 
-        $response = $this->get('/');
+        $response = $this->get(route('home'));
         $response->assertStatus(200);
         $response->assertSee('Proxmox VE');
-        $response->assertSee('Enterprise Open-Source Server Virtualization.');
-        $response->assertSee('https://proxmox.com');
         $response->assertDontSee('Disabled Panel');
     }
 
@@ -67,7 +65,7 @@ class ControlPanelsTest extends TestCase
 
         $response = $this->actingAs($admin)->get(route('admin.control-panels'));
         $response->assertStatus(200);
-        $response->assertSee('Supported Hosting Control Panels');
+        $response->assertSee('Supported Control Panels');
     }
 
     public function test_admin_can_add_new_control_panel()
